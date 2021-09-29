@@ -10,10 +10,12 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    materialsgenre.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    materialsgenre.h
 
 FORMS += \
     mainwindow.ui
@@ -22,3 +24,8 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES +=
+
+RESOURCES += \
+    MaterialGenres.qrc

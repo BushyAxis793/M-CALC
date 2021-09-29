@@ -20,6 +20,8 @@ private slots:
 
     void on_chooseMaterialShapeComboBox_currentIndexChanged(int index);
 
+    void on_chooseMaterialTypeComboBox_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
 };

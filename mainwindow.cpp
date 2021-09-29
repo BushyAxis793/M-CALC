@@ -1,5 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "materialsgenre.h"
+#include <QFile>
+#include <QTextStream>
+#include <QtDebug>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -34,6 +38,32 @@ MainWindow::MainWindow(QWidget *parent)
     ui->chooseMaterialTypeComboBox->addItem("Miedź");
     ui->chooseMaterialTypeComboBox->addItem("Ołow");
 
+    MaterialsGenre *mg = new MaterialsGenre();
+
+    mg->OpenFile();
+
+/*
+    QFile file(":/Steel/SteelGenre.txt");
+
+     if(!file.exists())
+     {
+         qCritical()<<file.errorString();
+         return;
+     }
+     if(!file.open(QIODevice::ReadOnly))
+     {
+         qCritical()<<file.errorString();
+         return;
+     }
+
+     QTextStream stream(&file);
+     while(!stream.atEnd())
+     {
+         QString line = stream.read(1);
+         qInfo()<<line;
+     }
+     file.close();
+*/
 
 }
 
@@ -60,60 +90,119 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
 {
     switch(ui->chooseMaterialShapeComboBox->currentIndex())
     {
-    case 0:
+    case 0://Pręt okrągły
+        ui->dimension1Label->setText("Średnica zew. [mm]");
+        ui->dimension2Label->setText("Długość [mm]");
+
         ui->dimension3Label->setVisible(false);
         ui->dimension3TextBox->setVisible(false);
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
+        break;
+    case 1://Rura okrągła
+        ui->dimension1Label->setText("Średnica zew. [mm]");
+        ui->dimension2Label->setText("Grubość ściany [mm]");
+        ui->dimension3Label->setText("Długość [mm]");
+
+        ui->dimension3Label->setVisible(true);
+        ui->dimension3TextBox->setVisible(true);
+        ui->dimension4Label->setVisible(false);
+        ui->dimension4TextBox->setVisible(false);
+        break;
+    case 2://Pręt sześciokątny
+        ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension2Label->setText("Długość [mm]");
+
+        ui->dimension3Label->setVisible(false);
+        ui->dimension3TextBox->setVisible(false);
+        ui->dimension4Label->setVisible(false);
+        ui->dimension4TextBox->setVisible(false);
+        break;
+    case 3://Rura sześciokątna
+        ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension2Label->setText("Średnica zew. [mm]");
+        ui->dimension3Label->setText("Długość [mm]");
+
+        ui->dimension3Label->setVisible(true);
+        ui->dimension3TextBox->setVisible(true);
+        ui->dimension4Label->setVisible(false);
+        ui->dimension4TextBox->setVisible(false);
+        break;
+    case 4://Pręt kwadratowy
+        ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension2Label->setText("Długość [mm]");
+
+        ui->dimension3Label->setVisible(false);
+        ui->dimension3TextBox->setVisible(false);
+        ui->dimension4Label->setVisible(false);
+        ui->dimension4TextBox->setVisible(false);
+        break;
+    case 5://Blacha/Płaskownik
+        ui->dimension1Label->setText("Grubość [mm]");
+        ui->dimension2Label->setText("Szerokość [mm]");
+        ui->dimension3Label->setText("Długość [mm]");
+
+        ui->dimension3Label->setVisible(true);
+        ui->dimension3TextBox->setVisible(true);
+        ui->dimension4Label->setVisible(false);
+        ui->dimension4TextBox->setVisible(false);
+        break;
+    case 6://Profil kwadratowy
+        ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension2Label->setText("Szerokość [mm]");
+        ui->dimension3Label->setText("Grubość ściany [mm]");
+        ui->dimension4Label->setText("Długość [mm]");
+
+        ui->dimension3Label->setVisible(true);
+        ui->dimension3TextBox->setVisible(true);
+        ui->dimension4Label->setVisible(true);
+        ui->dimension4TextBox->setVisible(true);
+        break;
+    case 7://Kątownik/Teownik
+        ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension2Label->setText("Szerokość [mm]");
+        ui->dimension3Label->setText("Grubość ściany [mm]");
+        ui->dimension4Label->setText("Długość [mm]");
+
+        ui->dimension3Label->setVisible(true);
+        ui->dimension3TextBox->setVisible(true);
+        ui->dimension4Label->setVisible(true);
+        ui->dimension4TextBox->setVisible(true);
+        break;
+    case 8://Ceownik/Dwuteownik
+        ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension2Label->setText("Szerokość [mm]");
+        ui->dimension3Label->setText("Grubość ściany [mm]");
+        ui->dimension4Label->setText("Długość [mm]");
+
+        ui->dimension3Label->setVisible(true);
+        ui->dimension3TextBox->setVisible(true);
+        ui->dimension4Label->setVisible(true);
+        ui->dimension4TextBox->setVisible(true);
+        break;
+    }
+}
+
+
+void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
+{
+    switch(ui->chooseMaterialTypeComboBox->currentIndex())
+    {
+    case 0:
+        //Otwórz plik i załaduj do listy struktur i dodaj do comboboxa
+
         break;
     case 1:
-        ui->dimension3Label->setVisible(true);
-        ui->dimension3TextBox->setVisible(true);
-        ui->dimension4Label->setVisible(false);
-        ui->dimension4TextBox->setVisible(false);
         break;
     case 2:
-        ui->dimension3Label->setVisible(false);
-        ui->dimension3TextBox->setVisible(false);
-        ui->dimension4Label->setVisible(false);
-        ui->dimension4TextBox->setVisible(false);
         break;
     case 3:
-        ui->dimension3Label->setVisible(true);
-        ui->dimension3TextBox->setVisible(true);
-        ui->dimension4Label->setVisible(false);
-        ui->dimension4TextBox->setVisible(false);
         break;
     case 4:
-        ui->dimension3Label->setVisible(true);
-        ui->dimension3TextBox->setVisible(true);
-        ui->dimension4Label->setVisible(false);
-        ui->dimension4TextBox->setVisible(false);
         break;
     case 5:
-        ui->dimension3Label->setVisible(false);
-        ui->dimension3TextBox->setVisible(false);
-        ui->dimension4Label->setVisible(false);
-        ui->dimension4TextBox->setVisible(false);
         break;
-    case 6:
-        ui->dimension3Label->setVisible(true);
-        ui->dimension3TextBox->setVisible(true);
-        ui->dimension4Label->setVisible(true);
-        ui->dimension4TextBox->setVisible(true);
-        break;
-    case 7:
-        ui->dimension3Label->setVisible(true);
-        ui->dimension3TextBox->setVisible(true);
-        ui->dimension4Label->setVisible(true);
-        ui->dimension4TextBox->setVisible(true);
-        break;
-    case 8:
-        ui->dimension3Label->setVisible(true);
-        ui->dimension3TextBox->setVisible(true);
-        ui->dimension4Label->setVisible(true);
-        ui->dimension4TextBox->setVisible(true);
-        break;
+
     }
 }
 
