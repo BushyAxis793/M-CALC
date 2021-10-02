@@ -25,5 +25,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    void LoadComboboxes();
+    void AcceptOnlyDouble();
 };
 #endif // MAINWINDOW_H

@@ -5,9 +5,17 @@
 #include <QTextStream>
 #include <QtDebug>
 #include <QList>
+#include "Coating_Area.h"
+#include "Density.h"
+#include "Surface_Area.h"
+#include "Volume.h"
 
 
 QList<MaterialsGenre::Genre> genreStructList;
+Volume v;
+Density d;
+Surface_Area sa;
+Coating_Area ca;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,34 +23,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //Wypełnianie comboboxa typu powłoki
-    ui->coatTypeComboBox->addItem("Anodowanie");
-    ui->coatTypeComboBox->addItem("Cynkowanie");
-    ui->coatTypeComboBox->addItem("Hartowanie");
-    ui->coatTypeComboBox->addItem("Czernienie");
+    //Wypełnianie comboboxów
+    LoadComboboxes();
 
-    //Wypełnianie comboboxa kształtu materiału
-    ui->chooseMaterialShapeComboBox->addItem("Pręt okrągły");
-    ui->chooseMaterialShapeComboBox->addItem("Rura okrągła");
-    ui->chooseMaterialShapeComboBox->addItem("Pręt sześciokątny");
-    ui->chooseMaterialShapeComboBox->addItem("Rura sześciokątna");
-    ui->chooseMaterialShapeComboBox->addItem("Pręt kwadratowy");
-    ui->chooseMaterialShapeComboBox->addItem("Blacha/Płaskownik");
-    ui->chooseMaterialShapeComboBox->addItem("Profil zamknięty");
-    ui->chooseMaterialShapeComboBox->addItem("Kątownik/Teownik");
-    ui->chooseMaterialShapeComboBox->addItem("Ceownik/Dwuteownik");
-
-    //Wypełnianie comboboxa rodzaju materiału
-    ui->chooseMaterialTypeComboBox->addItem("Aluminium");
-    ui->chooseMaterialTypeComboBox->addItem("Stal");
-    ui->chooseMaterialTypeComboBox->addItem("Stal nierdzewna");
-    ui->chooseMaterialTypeComboBox->addItem("Brąz");
-    ui->chooseMaterialTypeComboBox->addItem("Mosiądz");
-    ui->chooseMaterialTypeComboBox->addItem("Miedź");
-    ui->chooseMaterialTypeComboBox->addItem("Ołow");
-
-
-
+    //Akceptacja tylko liczb
+    AcceptOnlyDouble();
 
 
 
@@ -59,10 +44,12 @@ void MainWindow::on_coatCheckBox_stateChanged()
     if(ui->coatCheckBox->isChecked())
     {
         ui->coatTypeComboBox->setEnabled(true);
+        ui->coatPriceTextBox->setEnabled(true);
     }
     else
     {
         ui->coatTypeComboBox->setEnabled(false);
+        ui->coatPriceTextBox->setEnabled(false);
     }
 }
 
@@ -79,6 +66,12 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension3TextBox->setVisible(false);
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
+
+        qDebug()<<v.CalculateRoundRod((ui->dimension1TextBox->text().toFloat()),ui->dimension2TextBox->text().toFloat());//Dokończyć
+
+
+
+
         break;
     case 1://Rura okrągła
         ui->dimension1Label->setText("Średnica zew. [mm]");
@@ -164,6 +157,41 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
     }
 }
 
+void MainWindow::LoadComboboxes()
+{
+    ui->coatTypeComboBox->addItem("Anodowanie");
+    ui->coatTypeComboBox->addItem("Cynkowanie");
+    ui->coatTypeComboBox->addItem("Hartowanie");
+    ui->coatTypeComboBox->addItem("Czernienie");
+
+    //Wypełnianie comboboxa kształtu materiału
+    ui->chooseMaterialShapeComboBox->addItem("Pręt okrągły");
+    ui->chooseMaterialShapeComboBox->addItem("Rura okrągła");
+    ui->chooseMaterialShapeComboBox->addItem("Pręt sześciokątny");
+    ui->chooseMaterialShapeComboBox->addItem("Rura sześciokątna");
+    ui->chooseMaterialShapeComboBox->addItem("Pręt kwadratowy");
+    ui->chooseMaterialShapeComboBox->addItem("Blacha/Płaskownik");
+    ui->chooseMaterialShapeComboBox->addItem("Profil zamknięty");
+    ui->chooseMaterialShapeComboBox->addItem("Kątownik/Teownik");
+    ui->chooseMaterialShapeComboBox->addItem("Ceownik/Dwuteownik");
+
+    //Wypełnianie comboboxa rodzaju materiału
+    ui->chooseMaterialTypeComboBox->addItem("Aluminium");
+    ui->chooseMaterialTypeComboBox->addItem("Stal");
+    ui->chooseMaterialTypeComboBox->addItem("Stal nierdzewna");
+    ui->chooseMaterialTypeComboBox->addItem("Plastik");
+    ui->chooseMaterialTypeComboBox->addItem("Żeliwo");
+}
+
+void MainWindow::AcceptOnlyDouble()
+{
+    ui->coatPriceTextBox->setValidator(new QDoubleValidator(0,100,2,this));
+    ui->dimension1TextBox->setValidator(new QDoubleValidator(0,100,2,this));
+    ui->dimension2TextBox->setValidator(new QDoubleValidator(0,100,2,this));
+    ui->dimension3TextBox->setValidator(new QDoubleValidator(0,100,2,this));
+    ui->dimension4TextBox->setValidator(new QDoubleValidator(0,100,2,this));
+    ui->materialPriceTextBox->setValidator(new QDoubleValidator(0,100,2,this));
+}
 
 void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
 {
@@ -185,21 +213,18 @@ void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
         break;
     case 3:
         ui->chooseMaterialGenreComboBox->clear();
-
+        OpenFile(mg->PLASTIC_GENRE);
         break;
     case 4:
         ui->chooseMaterialGenreComboBox->clear();
-
-        break;
-    case 5:
-        ui->chooseMaterialGenreComboBox->clear();
-
+        OpenFile(mg->CASTIRON_GENRE);
         break;
 
     }
 
     delete mg;
 }
+
 
 void MainWindow::OpenFile( QString filePath)
 {

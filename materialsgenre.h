@@ -12,6 +12,9 @@ public:
     const QString STEEL_GENRE = ":/Resources/MaterialGenres/Steel/SteelGenre.txt";
     const QString ALUMINIUM_GENRE = ":/Resources/MaterialGenres/Aluminium/AluminiumGenre.txt";
     const QString STAINLESSSTEEL_GENRE = ":/Resources/MaterialGenres/StainlessSteel/StainlessSteelGenre.txt";
+    const QString PLASTIC_GENRE = ":/Resources/MaterialGenres/Plastic/PlasticsGenre.txt";
+    const QString CASTIRON_GENRE = ":/Resources/MaterialGenres/CastIron/CastIronGenre.txt";
+
     struct Genre
     {
         QString materialGenre;
