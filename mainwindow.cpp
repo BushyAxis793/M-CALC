@@ -4,7 +4,10 @@
 #include <QFile>
 #include <QTextStream>
 #include <QtDebug>
+#include <QList>
 
+
+QList<MaterialsGenre::Genre> genreStructList;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -38,32 +41,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->chooseMaterialTypeComboBox->addItem("Miedź");
     ui->chooseMaterialTypeComboBox->addItem("Ołow");
 
-    MaterialsGenre *mg = new MaterialsGenre();
 
-    mg->OpenFile();
 
-/*
-    QFile file(":/Steel/SteelGenre.txt");
 
-     if(!file.exists())
-     {
-         qCritical()<<file.errorString();
-         return;
-     }
-     if(!file.open(QIODevice::ReadOnly))
-     {
-         qCritical()<<file.errorString();
-         return;
-     }
 
-     QTextStream stream(&file);
-     while(!stream.atEnd())
-     {
-         QString line = stream.read(1);
-         qInfo()<<line;
-     }
-     file.close();
-*/
 
 }
 
@@ -186,23 +167,76 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
 
 void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
 {
+    MaterialsGenre *mg = new MaterialsGenre();
+
     switch(ui->chooseMaterialTypeComboBox->currentIndex())
     {
-    case 0:
-        //Otwórz plik i załaduj do listy struktur i dodaj do comboboxa
-
+    case 0://Aluminium
+        ui->chooseMaterialGenreComboBox->clear();
+        OpenFile(mg->ALUMINIUM_GENRE);
         break;
-    case 1:
+    case 1://Stal
+        ui->chooseMaterialGenreComboBox->clear();
+        OpenFile(mg->STEEL_GENRE);
         break;
-    case 2:
+    case 2://Stal nierdzewna
+        ui->chooseMaterialGenreComboBox->clear();
+        OpenFile(mg->STAINLESSSTEEL_GENRE);
         break;
     case 3:
+        ui->chooseMaterialGenreComboBox->clear();
+
         break;
     case 4:
+        ui->chooseMaterialGenreComboBox->clear();
+
         break;
     case 5:
+        ui->chooseMaterialGenreComboBox->clear();
+
         break;
 
     }
+
+    delete mg;
+}
+
+void MainWindow::OpenFile( QString filePath)
+{
+    MaterialsGenre *mg = new MaterialsGenre();
+
+    QFile file(filePath);
+
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug()<<"Cant open file";
+    }
+
+    while(!file.atEnd())
+    {
+        QString line = file.readLine();
+        QStringList list = line.split(" ");
+        int i=0;
+        int j=1;
+
+        for(; i<list.size();i++)
+        {
+            ui->chooseMaterialGenreComboBox->addItem(list[i]);
+            mg->SetGenre(list[i],list[j].toDouble());
+            i++;
+        }
+        for(; j<list.size();j++)
+        {
+            j++;
+
+        }
+        genreStructList.append(mg->GetGenre());
+
+
+    }
+
+    file.close();
+
+    delete mg;
 }
 

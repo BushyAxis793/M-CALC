@@ -12,6 +12,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    void OpenFile(QString);
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 

@@ -4,21 +4,24 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <QString>
 
 class MaterialsGenre
 {
 public:
-    struct mGenre
+    const QString STEEL_GENRE = ":/Resources/MaterialGenres/Steel/SteelGenre.txt";
+    const QString ALUMINIUM_GENRE = ":/Resources/MaterialGenres/Aluminium/AluminiumGenre.txt";
+    const QString STAINLESSSTEEL_GENRE = ":/Resources/MaterialGenres/StainlessSteel/StainlessSteelGenre.txt";
+    struct Genre
     {
-        std::string materialGenre;
+        QString materialGenre;
         double materialDensity;
     };
 
-
     MaterialsGenre();
-    mGenre GetGenre();
-    void SetGenre(std::string,double);
-    void OpenFile();
+    Genre GetGenre();
+    void SetGenre(QString,double);
+
 };
 
 #endif // MATERIALSGENRE_H

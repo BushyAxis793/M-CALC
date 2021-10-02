@@ -1,3 +1,7 @@
 <RCC>
-    <qresource prefix="/Resources"/>
+    <qresource prefix="/Resources">
+        <file>MaterialGenres/Aluminium/AluminiumGenre.txt</file>
+        <file>MaterialGenres/Steel/SteelGenre.txt</file>
+        <file>MaterialGenres/StainlessSteel/StainlessSteelGenre.txt</file>
+    </qresource>
 </RCC>
