@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QtDebug>
 #include <QList>
+#include<QProcess>
 #include "Coating_Area.h"
 #include "Density.h"
 #include "Surface_Area.h"
@@ -16,12 +17,21 @@ Volume v;
 Density d;
 Surface_Area sa;
 Coating_Area ca;
+double materialDensity=0;
+float materialSurfaceArea=0;
+float materialVolume=0;
+float materialCoatingArea=0;
+float materialMass=0;
+float dim1,dim2,dim3,dim4,price;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    OpenFile(":/Resources/MaterialGenres/Aluminium/AluminiumGenre.txt");
+
 
     //Wypełnianie comboboxów
     LoadComboboxes();
@@ -66,12 +76,6 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension3TextBox->setVisible(false);
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
-
-        qDebug()<<v.CalculateRoundRod((ui->dimension1TextBox->text().toFloat()),ui->dimension2TextBox->text().toFloat());//Dokończyć
-
-
-
-
         break;
     case 1://Rura okrągła
         ui->dimension1Label->setText("Średnica zew. [mm]");
@@ -165,6 +169,7 @@ void MainWindow::LoadComboboxes()
     ui->coatTypeComboBox->addItem("Czernienie");
 
     //Wypełnianie comboboxa kształtu materiału
+
     ui->chooseMaterialShapeComboBox->addItem("Pręt okrągły");
     ui->chooseMaterialShapeComboBox->addItem("Rura okrągła");
     ui->chooseMaterialShapeComboBox->addItem("Pręt sześciokątny");
@@ -201,22 +206,27 @@ void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
     {
     case 0://Aluminium
         ui->chooseMaterialGenreComboBox->clear();
+        genreStructList.clear();
         OpenFile(mg->ALUMINIUM_GENRE);
         break;
     case 1://Stal
         ui->chooseMaterialGenreComboBox->clear();
+        genreStructList.clear();
         OpenFile(mg->STEEL_GENRE);
         break;
     case 2://Stal nierdzewna
         ui->chooseMaterialGenreComboBox->clear();
+        genreStructList.clear();
         OpenFile(mg->STAINLESSSTEEL_GENRE);
         break;
     case 3:
         ui->chooseMaterialGenreComboBox->clear();
+        genreStructList.clear();
         OpenFile(mg->PLASTIC_GENRE);
         break;
     case 4:
         ui->chooseMaterialGenreComboBox->clear();
+        genreStructList.clear();
         OpenFile(mg->CASTIRON_GENRE);
         break;
 
@@ -224,7 +234,6 @@ void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
 
     delete mg;
 }
-
 
 void MainWindow::OpenFile( QString filePath)
 {
@@ -236,6 +245,7 @@ void MainWindow::OpenFile( QString filePath)
     {
         qDebug()<<"Cant open file";
     }
+
 
     while(!file.atEnd())
     {
@@ -258,6 +268,7 @@ void MainWindow::OpenFile( QString filePath)
         genreStructList.append(mg->GetGenre());
 
 
+
     }
 
     file.close();
@@ -265,3 +276,84 @@ void MainWindow::OpenFile( QString filePath)
     delete mg;
 }
 
+void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
+{
+
+    if(genreStructList.length()==0) return;
+
+
+    switch(ui->chooseMaterialTypeComboBox->currentIndex())
+    {
+    case 0://Aluminium
+        SetMaterialDensity();
+        break;
+    case 1:
+        SetMaterialDensity();
+        break;
+    case 2:
+        SetMaterialDensity();
+        break;
+    case 3:
+        SetMaterialDensity();
+        break;
+    case 4:
+        SetMaterialDensity();
+        break;
+
+    }
+
+}
+
+void MainWindow::SetMaterialDensity()
+{
+    switch(ui->chooseMaterialGenreComboBox->currentIndex())
+    {
+    case 0:
+        materialDensity = genreStructList[0].materialDensity;
+        qDebug()<<materialDensity;
+        break;
+    }
+
+
+
+
+}
+
+
+
+void MainWindow::on_dimension1TextBox_editingFinished()
+{
+    dim1 = ui->dimension1TextBox->text().toFloat();
+    RefreshResult();
+}
+
+
+void MainWindow::on_dimension2TextBox_editingFinished()
+{
+    dim2 = ui->dimension2TextBox->text().toFloat();
+    RefreshResult();
+}
+
+
+void MainWindow::on_dimension3TextBox_editingFinished()
+{
+    dim3 = ui->dimension3TextBox->text().toFloat();
+}
+
+
+void MainWindow::on_dimension4TextBox_editingFinished()
+{
+    dim4 = ui->dimension4TextBox->text().toFloat();
+}
+
+
+void MainWindow::on_materialPriceTextBox_editingFinished()
+{
+    price = ui->materialPriceTextBox->text().toFloat();
+}
+
+
+void MainWindow::RefreshResult()
+{
+    qDebug()<<d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(dim1,dim2));
+}
