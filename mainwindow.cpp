@@ -22,7 +22,7 @@ float materialSurfaceArea=0;
 float materialVolume=0;
 float materialCoatingArea=0;
 float materialMass=0;
-float dim1,dim2,dim3,dim4,price;
+float dim1=0,dim2=0,dim3=0,dim4=0,price=0;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,15 +31,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     OpenFile(":/Resources/MaterialGenres/Aluminium/AluminiumGenre.txt");
-
+    materialDensity = genreStructList[0].materialDensity;
 
     //Wypełnianie comboboxów
     LoadComboboxes();
 
     //Akceptacja tylko liczb
     AcceptOnlyDouble();
-
-
 
 }
 
@@ -66,6 +64,10 @@ void MainWindow::on_coatCheckBox_stateChanged()
 
 void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
 {
+    qDebug()<<ui->dimension1TextBox->text().toFloat();
+    qDebug()<<ui->dimension2TextBox->text().toFloat();
+    qDebug()<<ui->dimension3TextBox->text().toFloat();
+
     switch(ui->chooseMaterialShapeComboBox->currentIndex())
     {
     case 0://Pręt okrągły
@@ -76,6 +78,9 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension3TextBox->setVisible(false);
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
+
+        SetMaterialDensity();
+        CalculateMass();
         break;
     case 1://Rura okrągła
         ui->dimension1Label->setText("Średnica zew. [mm]");
@@ -86,6 +91,10 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension3TextBox->setVisible(true);
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
+
+
+        SetMaterialDensity();
+        CalculateMass();
         break;
     case 2://Pręt sześciokątny
         ui->dimension1Label->setText("Wysokość [mm]");
@@ -200,6 +209,7 @@ void MainWindow::AcceptOnlyDouble()
 
 void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
 {
+
     MaterialsGenre *mg = new MaterialsGenre();
 
     switch(ui->chooseMaterialTypeComboBox->currentIndex())
@@ -219,12 +229,12 @@ void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
         genreStructList.clear();
         OpenFile(mg->STAINLESSSTEEL_GENRE);
         break;
-    case 3:
+    case 3://Plastik
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->PLASTIC_GENRE);
         break;
-    case 4:
+    case 4://Żeliwo
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->CASTIRON_GENRE);
@@ -286,18 +296,23 @@ void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
     {
     case 0://Aluminium
         SetMaterialDensity();
+        CalculateMass();
         break;
-    case 1:
+    case 1://Stal
         SetMaterialDensity();
+        CalculateMass();
         break;
-    case 2:
+    case 2://Stal nierdzewna
         SetMaterialDensity();
+        CalculateMass();
         break;
-    case 3:
+    case 3://Plastik
         SetMaterialDensity();
+        CalculateMass();
         break;
-    case 4:
+    case 4://Żeliwo
         SetMaterialDensity();
+        CalculateMass();
         break;
 
     }
@@ -306,16 +321,12 @@ void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
 
 void MainWindow::SetMaterialDensity()
 {
-    switch(ui->chooseMaterialGenreComboBox->currentIndex())
-    {
-    case 0:
-        materialDensity = genreStructList[0].materialDensity;
-        qDebug()<<materialDensity;
-        break;
+
+    for (int i=0;i<=ui->chooseMaterialGenreComboBox->currentIndex() ;i++ ) {
+
+        materialDensity = genreStructList[i].materialDensity;
+
     }
-
-
-
 
 }
 
@@ -324,36 +335,78 @@ void MainWindow::SetMaterialDensity()
 void MainWindow::on_dimension1TextBox_editingFinished()
 {
     dim1 = ui->dimension1TextBox->text().toFloat();
-    RefreshResult();
+    CalculateMass();
 }
 
 
 void MainWindow::on_dimension2TextBox_editingFinished()
 {
     dim2 = ui->dimension2TextBox->text().toFloat();
-    RefreshResult();
+    CalculateMass();
 }
 
 
 void MainWindow::on_dimension3TextBox_editingFinished()
 {
     dim3 = ui->dimension3TextBox->text().toFloat();
+    CalculateMass();
 }
 
 
 void MainWindow::on_dimension4TextBox_editingFinished()
 {
     dim4 = ui->dimension4TextBox->text().toFloat();
+    CalculateMass();
 }
 
 
 void MainWindow::on_materialPriceTextBox_editingFinished()
 {
     price = ui->materialPriceTextBox->text().toFloat();
+    CalculateMass();
 }
 
 
-void MainWindow::RefreshResult()
+void MainWindow::CalculateMass()
 {
-    qDebug()<<d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(dim1,dim2));
+    switch(ui->chooseMaterialShapeComboBox->currentIndex())
+    {
+    case 0:
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(dim1,dim2)),'f',4));
+        break;
+    case 1:
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateRoundPipe(dim1,dim2,dim3)),'f',4));
+        break;
+    case 2:
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalRod(dim1,dim2)),'f',4));
+        break;
+    case 3:
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalPipe(dim1,dim2,dim3)),'f',4));
+        break;
+    case 4:
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateSquareRod(dim1,dim2)),'f',4));
+        break;
+    case 5:
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculatePlate(dim1,dim2,dim3)),'f',4));
+        break;
+    case 6:
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateSquareProfile(dim1,dim2,dim3,dim4)),'f',4));
+        break;
+    case 7:
+       ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateAngleProfile(dim1,dim2,dim3,dim4)),'f',4));
+        break;
+    case 8:
+       ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateCProfile(dim1,dim2,dim3,dim4)),'f',4));
+        break;
+    case 9:
+       ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateTProfile(dim1,dim2,dim3,dim4)),'f',4));
+        break;
+    case 10:
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.Calculate2TProfile(dim1,dim2,dim3,dim4)),'f',4));
+        break;
+    }
+
+
+
+
 }

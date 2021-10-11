@@ -39,7 +39,7 @@ private:
     Ui::MainWindow *ui;
     void LoadComboboxes();
     void AcceptOnlyDouble();
-    void RefreshResult();
+    void CalculateMass();
     void SetMaterialDensity();
 };
 #endif // MAINWINDOW_H
