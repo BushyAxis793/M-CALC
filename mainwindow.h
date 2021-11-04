@@ -25,15 +25,15 @@ private slots:
 
     void on_chooseMaterialGenreComboBox_currentIndexChanged(int index);
 
-    void on_dimension1TextBox_editingFinished();
+    void on_dimension1TextBox_textEdited(const QString &arg1);
 
-    void on_dimension2TextBox_editingFinished();
+    void on_dimension2TextBox_textEdited(const QString &arg1);
 
-    void on_dimension3TextBox_editingFinished();
+    void on_dimension3TextBox_textEdited(const QString &arg1);
 
-    void on_dimension4TextBox_editingFinished();
+    void on_dimension4TextBox_textEdited(const QString &arg1);
 
-    void on_materialPriceTextBox_editingFinished();
+    void on_materialPriceTextBox_textEdited(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
@@ -41,5 +41,6 @@ private:
     void AcceptOnlyDouble();
     void CalculateMass();
     void SetMaterialDensity();
+    void SwitchMaterialType();
 };
 #endif // MAINWINDOW_H

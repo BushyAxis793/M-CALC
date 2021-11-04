@@ -64,28 +64,33 @@ void MainWindow::on_coatCheckBox_stateChanged()
 
 void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
 {
-    qDebug()<<ui->dimension1TextBox->text().toFloat();
-    qDebug()<<ui->dimension2TextBox->text().toFloat();
-    qDebug()<<ui->dimension3TextBox->text().toFloat();
+
 
     switch(ui->chooseMaterialShapeComboBox->currentIndex())
     {
     case 0://Pręt okrągły
         ui->dimension1Label->setText("Średnica zew. [mm]");
+        ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Długość [mm]");
+        ui->dimension2TextBox->setText("");
 
         ui->dimension3Label->setVisible(false);
         ui->dimension3TextBox->setVisible(false);
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
 
-        SetMaterialDensity();
-        CalculateMass();
+        dim1=0;
+        dim2=0;
+        SwitchMaterialType();
+
         break;
     case 1://Rura okrągła
-        ui->dimension1Label->setText("Średnica zew. [mm]");
+        ui->dimension1Label->setText("Średnica wew. [mm]");
+        ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Grubość ściany [mm]");
+        ui->dimension2TextBox->setText("");
         ui->dimension3Label->setText("Długość [mm]");
+        ui->dimension3TextBox->setText("");
 
         ui->dimension3Label->setVisible(true);
         ui->dimension3TextBox->setVisible(true);
@@ -93,79 +98,141 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4TextBox->setVisible(false);
 
 
-        SetMaterialDensity();
-        CalculateMass();
+        dim1=0;
+        dim2=0;
+        dim3=0;
+        SwitchMaterialType();
+
         break;
     case 2://Pręt sześciokątny
         ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Długość [mm]");
+        ui->dimension2TextBox->setText("");
 
         ui->dimension3Label->setVisible(false);
         ui->dimension3TextBox->setVisible(false);
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
+
+        dim1=0;
+        dim2=0;
+        SwitchMaterialType();
+
         break;
     case 3://Rura sześciokątna
         ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Średnica zew. [mm]");
+        ui->dimension2TextBox->setText("");
         ui->dimension3Label->setText("Długość [mm]");
+        ui->dimension3TextBox->setText("");
 
         ui->dimension3Label->setVisible(true);
         ui->dimension3TextBox->setVisible(true);
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
+
+        dim1=0;
+        dim2=0;
+        dim3=0;
+        SwitchMaterialType();
+
         break;
     case 4://Pręt kwadratowy
         ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Długość [mm]");
+        ui->dimension2TextBox->setText("");
 
         ui->dimension3Label->setVisible(false);
         ui->dimension3TextBox->setVisible(false);
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
+
+        SwitchMaterialType();
+
         break;
     case 5://Blacha/Płaskownik
         ui->dimension1Label->setText("Grubość [mm]");
+        ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Szerokość [mm]");
+        ui->dimension2TextBox->setText("");
         ui->dimension3Label->setText("Długość [mm]");
+        ui->dimension3TextBox->setText("");
 
         ui->dimension3Label->setVisible(true);
         ui->dimension3TextBox->setVisible(true);
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
+
+        dim1=0;
+        dim2=0;
+        dim3=0;
+        SwitchMaterialType();
+
         break;
     case 6://Profil kwadratowy
         ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Szerokość [mm]");
+        ui->dimension2TextBox->setText("");
         ui->dimension3Label->setText("Grubość ściany [mm]");
+        ui->dimension3TextBox->setText("");
         ui->dimension4Label->setText("Długość [mm]");
+        ui->dimension4TextBox->setText("");
 
         ui->dimension3Label->setVisible(true);
         ui->dimension3TextBox->setVisible(true);
         ui->dimension4Label->setVisible(true);
         ui->dimension4TextBox->setVisible(true);
+
+        dim1=0;
+        dim2=0;
+        dim3=0;
+        dim4=0;
+        SwitchMaterialType();
+
         break;
     case 7://Kątownik/Teownik
         ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Szerokość [mm]");
+        ui->dimension2TextBox->setText("");
         ui->dimension3Label->setText("Grubość ściany [mm]");
+        ui->dimension3TextBox->setText("");
         ui->dimension4Label->setText("Długość [mm]");
+        ui->dimension4TextBox->setText("");
 
         ui->dimension3Label->setVisible(true);
         ui->dimension3TextBox->setVisible(true);
         ui->dimension4Label->setVisible(true);
         ui->dimension4TextBox->setVisible(true);
+
+        SwitchMaterialType();
+
         break;
     case 8://Ceownik/Dwuteownik
         ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Szerokość [mm]");
+        ui->dimension2TextBox->setText("");
         ui->dimension3Label->setText("Grubość ściany [mm]");
+        ui->dimension3TextBox->setText("");
         ui->dimension4Label->setText("Długość [mm]");
+        ui->dimension4TextBox->setText("");
 
         ui->dimension3Label->setVisible(true);
         ui->dimension3TextBox->setVisible(true);
         ui->dimension4Label->setVisible(true);
         ui->dimension4TextBox->setVisible(true);
+
+        dim1=0;
+        dim2=0;
+        dim3=0;
+        dim4=0;
+        SwitchMaterialType();
+
         break;
     }
 }
@@ -207,9 +274,8 @@ void MainWindow::AcceptOnlyDouble()
     ui->materialPriceTextBox->setValidator(new QDoubleValidator(0,100,2,this));
 }
 
-void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
+void MainWindow::SwitchMaterialType()
 {
-
     MaterialsGenre *mg = new MaterialsGenre();
 
     switch(ui->chooseMaterialTypeComboBox->currentIndex())
@@ -218,11 +284,16 @@ void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->ALUMINIUM_GENRE);
+
+        //SetMaterialDensity();
+        //CalculateMass();
         break;
     case 1://Stal
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->STEEL_GENRE);
+
+        //Dodać reszte
         break;
     case 2://Stal nierdzewna
         ui->chooseMaterialGenreComboBox->clear();
@@ -243,6 +314,12 @@ void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
     }
 
     delete mg;
+}
+
+void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
+{
+
+    //SwitchMaterialType();
 }
 
 void MainWindow::OpenFile( QString filePath)
@@ -284,38 +361,11 @@ void MainWindow::OpenFile( QString filePath)
     file.close();
 
     delete mg;
+
 }
 
 void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
 {
-
-    if(genreStructList.length()==0) return;
-
-
-    switch(ui->chooseMaterialTypeComboBox->currentIndex())
-    {
-    case 0://Aluminium
-        SetMaterialDensity();
-        CalculateMass();
-        break;
-    case 1://Stal
-        SetMaterialDensity();
-        CalculateMass();
-        break;
-    case 2://Stal nierdzewna
-        SetMaterialDensity();
-        CalculateMass();
-        break;
-    case 3://Plastik
-        SetMaterialDensity();
-        CalculateMass();
-        break;
-    case 4://Żeliwo
-        SetMaterialDensity();
-        CalculateMass();
-        break;
-
-    }
 
 }
 
@@ -332,43 +382,51 @@ void MainWindow::SetMaterialDensity()
 
 
 
-void MainWindow::on_dimension1TextBox_editingFinished()
+void MainWindow::on_dimension1TextBox_textEdited(const QString &arg1)
 {
+    qDebug()<<ui->dimension1TextBox->text().toFloat();
+    qDebug()<<ui->dimension2TextBox->text().toFloat();
+    qDebug()<<ui->dimension3TextBox->text().toFloat();
     dim1 = ui->dimension1TextBox->text().toFloat();
     CalculateMass();
 }
 
-
-void MainWindow::on_dimension2TextBox_editingFinished()
+void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
 {
+    qDebug()<<ui->dimension1TextBox->text().toFloat();
+    qDebug()<<ui->dimension2TextBox->text().toFloat();
+    qDebug()<<ui->dimension3TextBox->text().toFloat();
     dim2 = ui->dimension2TextBox->text().toFloat();
     CalculateMass();
 }
 
-
-void MainWindow::on_dimension3TextBox_editingFinished()
+void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
 {
+    qDebug()<<ui->dimension1TextBox->text().toFloat();
+    qDebug()<<ui->dimension2TextBox->text().toFloat();
+    qDebug()<<ui->dimension3TextBox->text().toFloat();
     dim3 = ui->dimension3TextBox->text().toFloat();
     CalculateMass();
 }
 
-
-void MainWindow::on_dimension4TextBox_editingFinished()
+void MainWindow::on_dimension4TextBox_textEdited(const QString &arg1)
 {
     dim4 = ui->dimension4TextBox->text().toFloat();
     CalculateMass();
 }
 
-
-void MainWindow::on_materialPriceTextBox_editingFinished()
+void MainWindow::on_materialPriceTextBox_textEdited(const QString &arg1)
 {
     price = ui->materialPriceTextBox->text().toFloat();
     CalculateMass();
 }
 
 
+
 void MainWindow::CalculateMass()
 {
+    //ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(dim1,dim2)),'f',4));
+
     switch(ui->chooseMaterialShapeComboBox->currentIndex())
     {
     case 0:
@@ -393,13 +451,13 @@ void MainWindow::CalculateMass()
         ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateSquareProfile(dim1,dim2,dim3,dim4)),'f',4));
         break;
     case 7:
-       ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateAngleProfile(dim1,dim2,dim3,dim4)),'f',4));
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateAngleProfile(dim1,dim2,dim3,dim4)),'f',4));
         break;
     case 8:
-       ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateCProfile(dim1,dim2,dim3,dim4)),'f',4));
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateCProfile(dim1,dim2,dim3,dim4)),'f',4));
         break;
     case 9:
-       ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateTProfile(dim1,dim2,dim3,dim4)),'f',4));
+        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateTProfile(dim1,dim2,dim3,dim4)),'f',4));
         break;
     case 10:
         ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.Calculate2TProfile(dim1,dim2,dim3,dim4)),'f',4));
@@ -410,3 +468,18 @@ void MainWindow::CalculateMass()
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
