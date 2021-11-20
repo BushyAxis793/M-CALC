@@ -35,6 +35,12 @@ private slots:
 
     void on_materialPriceTextBox_textEdited(const QString &arg1);
 
+    void on_coatTypeComboBox_currentIndexChanged(int index);
+
+    void on_coatPriceTextBox_textEdited(const QString &arg1);
+
+    void on_euroRateTextBox_textEdited(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     void LoadComboboxes();
@@ -42,5 +48,8 @@ private:
     void CalculateMass();
     void SetMaterialDensity();
     void SwitchMaterialType();
+    void CalculateFinalEuroPrice();
+    void CalculateFinalPrice();
+    void SwitchCoatType();
 };
 #endif // MAINWINDOW_H

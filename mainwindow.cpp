@@ -11,6 +11,7 @@
 #include "Surface_Area.h"
 #include "Volume.h"
 
+#include <QRegularExpression>
 
 QList<MaterialsGenre::Genre> genreStructList;
 Volume v;
@@ -22,7 +23,22 @@ float materialSurfaceArea=0;
 float materialVolume=0;
 float materialCoatingArea=0;
 float materialMass=0;
+float materialCost=0;
+float materialPrice=0;
+float coatingCost=0;
+float coatingPrice=0;
+float finalPrice=0;
+float finalPriceEuro=0;
 float dim1=0,dim2=0,dim3=0,dim4=0,price=0;
+float euroRate = 0;
+
+
+
+void MainWindow::CalculateFinalEuroPrice()
+{
+    finalPriceEuro = finalPrice/euroRate;
+    ui->finalPriceEuroTextBox->setText(QString::number(finalPriceEuro,'f',4));
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -39,6 +55,11 @@ MainWindow::MainWindow(QWidget *parent)
     //Akceptacja tylko liczb
     AcceptOnlyDouble();
 
+    euroRate = 4.4;
+    ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -47,18 +68,31 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_coatCheckBox_stateChanged()
+void MainWindow::CalculateFinalPrice()
 {
     if(ui->coatCheckBox->isChecked())
     {
         ui->coatTypeComboBox->setEnabled(true);
         ui->coatPriceTextBox->setEnabled(true);
+        finalPrice = materialCost + coatingCost;
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
+
     }
     else
     {
         ui->coatTypeComboBox->setEnabled(false);
         ui->coatPriceTextBox->setEnabled(false);
+        finalPrice = materialCost;
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->coatCostTextBox->setText(QString::number(0,'f',4));
     }
+}
+
+void MainWindow::on_coatCheckBox_stateChanged()
+{
+    CalculateFinalPrice();
+    CalculateFinalEuroPrice();
 }
 
 
@@ -272,6 +306,8 @@ void MainWindow::AcceptOnlyDouble()
     ui->dimension3TextBox->setValidator(new QDoubleValidator(0,100,2,this));
     ui->dimension4TextBox->setValidator(new QDoubleValidator(0,100,2,this));
     ui->materialPriceTextBox->setValidator(new QDoubleValidator(0,100,2,this));
+    ui->euroRateTextBox->setValidator(new QDoubleValidator(0,100,2,this));
+
 }
 
 void MainWindow::SwitchMaterialType()
@@ -285,30 +321,34 @@ void MainWindow::SwitchMaterialType()
         genreStructList.clear();
         OpenFile(mg->ALUMINIUM_GENRE);
 
-        //SetMaterialDensity();
-        //CalculateMass();
         break;
     case 1://Stal
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->STEEL_GENRE);
 
-        //Dodać reszte
+
         break;
     case 2://Stal nierdzewna
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->STAINLESSSTEEL_GENRE);
+
+
         break;
     case 3://Plastik
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->PLASTIC_GENRE);
+
+
         break;
     case 4://Żeliwo
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->CASTIRON_GENRE);
+
+
         break;
 
     }
@@ -322,7 +362,7 @@ void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
     //SwitchMaterialType();
 }
 
-void MainWindow::OpenFile( QString filePath)
+void MainWindow::OpenFile(QString filePath)
 {
     MaterialsGenre *mg = new MaterialsGenre();
 
@@ -380,57 +420,79 @@ void MainWindow::SetMaterialDensity()
 
 }
 
-
+#pragma region DIMENSIONS: Text Boxes Change Value{
 
 void MainWindow::on_dimension1TextBox_textEdited(const QString &arg1)
 {
-    qDebug()<<ui->dimension1TextBox->text().toFloat();
-    qDebug()<<ui->dimension2TextBox->text().toFloat();
-    qDebug()<<ui->dimension3TextBox->text().toFloat();
-    dim1 = ui->dimension1TextBox->text().toFloat();
+    QString tempString = ui->dimension1TextBox->text();
+    tempString.replace(",",".");
+    dim1 = tempString.toFloat();
+
     CalculateMass();
+    CalculateFinalEuroPrice();
 }
 
 void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
 {
-    qDebug()<<ui->dimension1TextBox->text().toFloat();
-    qDebug()<<ui->dimension2TextBox->text().toFloat();
-    qDebug()<<ui->dimension3TextBox->text().toFloat();
-    dim2 = ui->dimension2TextBox->text().toFloat();
+    QString tempString = ui->dimension2TextBox->text();
+    tempString.replace(",",".");
+    dim2 = tempString.toFloat();
+
+
     CalculateMass();
+    CalculateFinalEuroPrice();
 }
 
 void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
 {
-    qDebug()<<ui->dimension1TextBox->text().toFloat();
-    qDebug()<<ui->dimension2TextBox->text().toFloat();
-    qDebug()<<ui->dimension3TextBox->text().toFloat();
-    dim3 = ui->dimension3TextBox->text().toFloat();
+    QString tempString = ui->dimension3TextBox->text();
+    tempString.replace(",",".");
+    dim3 = tempString.toFloat();
+
     CalculateMass();
+    CalculateFinalEuroPrice();
 }
 
 void MainWindow::on_dimension4TextBox_textEdited(const QString &arg1)
 {
-    dim4 = ui->dimension4TextBox->text().toFloat();
+
+    QString tempString = ui->dimension4TextBox->text();
+    tempString.replace(",",".");
+    dim4 = tempString.toFloat();
+
     CalculateMass();
+    CalculateFinalEuroPrice();
 }
 
 void MainWindow::on_materialPriceTextBox_textEdited(const QString &arg1)
 {
-    price = ui->materialPriceTextBox->text().toFloat();
+    QString tempString = ui->materialPriceTextBox->text();
+    tempString.replace(",",".");
+    materialPrice = tempString.toFloat();
+
     CalculateMass();
+    CalculateFinalEuroPrice();
 }
 
-
+#pragma endregion}
 
 void MainWindow::CalculateMass()
 {
-    //ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(dim1,dim2)),'f',4));
-
     switch(ui->chooseMaterialShapeComboBox->currentIndex())
     {
     case 0:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(dim1,dim2)),'f',4));
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(dim1,dim2));
+        materialSurfaceArea = sa.CalculateRoundRod(dim1,dim2);
+        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        finalPrice = materialCost;
+
+
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
+
+        CalculateFinalEuroPrice();
+
         break;
     case 1:
         ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateRoundPipe(dim1,dim2,dim3)),'f',4));
@@ -470,16 +532,66 @@ void MainWindow::CalculateMass()
 }
 
 
+void MainWindow::SwitchCoatType()
+{
+    switch (ui->coatTypeComboBox->currentIndex())
+    {
+    case 0:
+        coatingCost = ca.CalculateAnodizingCost(materialSurfaceArea,coatingPrice);
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
+        ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
+        break;
+    case 1:
+        coatingCost = ca.CalculateGalvanizingCost(materialMass,coatingPrice);
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
+        ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
+        break;
+    case 2:
+        coatingCost = ca.CalculateHardeningCost(materialMass,coatingPrice);
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
+        ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
+        break;
+    case 3:
+        coatingCost = ca.CalculateBlackeningCost(materialMass,coatingPrice);
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
+        ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
+        break;
+    }
+}
+
+void MainWindow::on_coatTypeComboBox_currentIndexChanged(int index)
+{
+
+    CalculateFinalEuroPrice();
+    CalculateFinalEuroPrice();
+
+    SwitchCoatType();
+}
 
 
+void MainWindow::on_coatPriceTextBox_textEdited(const QString &arg1)
+{
+    QString tempString = ui->coatPriceTextBox->text();
+    tempString.replace(",",".");
+    coatingPrice = tempString.toFloat();
+
+    SwitchCoatType();
+    CalculateFinalPrice();
 
 
+}
 
 
+void MainWindow::on_euroRateTextBox_textEdited(const QString &arg1)
+{
+    QString tempString = ui->euroRateTextBox->text();
+    tempString.replace(",",".");
+    euroRate = tempString.toFloat();
 
-
-
-
-
-
+    CalculateFinalEuroPrice();
+}
 
