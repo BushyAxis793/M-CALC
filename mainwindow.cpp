@@ -12,12 +12,14 @@
 #include "Volume.h"
 
 #include <QRegularExpression>
+#include <QSettings>
 
 QList<MaterialsGenre::Genre> genreStructList;
 Volume v;
 Density d;
 Surface_Area sa;
 Coating_Area ca;
+QSettings settings("P.W.U.H. METPOL","M-CALC");
 double materialDensity=0;
 float materialSurfaceArea=0;
 float materialVolume=0;
@@ -34,12 +36,6 @@ float euroRate = 0;
 
 
 
-void MainWindow::CalculateFinalEuroPrice()
-{
-    finalPriceEuro = finalPrice/euroRate;
-    ui->finalPriceEuroTextBox->setText(QString::number(finalPriceEuro,'f',4));
-}
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -55,16 +51,49 @@ MainWindow::MainWindow(QWidget *parent)
     //Akceptacja tylko liczb
     AcceptOnlyDouble();
 
-    euroRate = 4.4;
+    PreloadSummary();
+
+    LoadEuroRate();
+
+}
+
+void MainWindow::SaveEuroRate()
+{
+    settings.setValue("euroRate",euroRate);
+}
+
+void MainWindow::LoadEuroRate()
+{
+    euroRate = settings.value("euroRate",euroRate).toFloat();
     ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
-
-
-
 }
 
 MainWindow::~MainWindow()
 {
+    SaveEuroRate();
     delete ui;
+}
+
+void MainWindow::CalculateFinalEuroPrice()
+{
+    if(euroRate!=0)
+    {
+        finalPriceEuro = finalPrice/euroRate;
+    }
+    else
+    {
+        finalPriceEuro =0;
+    }
+    ui->finalPriceEuroTextBox->setText(QString::number(finalPriceEuro,'f',4));
+}
+
+void MainWindow::PreloadSummary()
+{
+
+    ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
+    ui->finalPriceEuroTextBox->setText(QString::number(0,'f',4));
+    ui->materialMassTextBox->setText(QString::number(0,'f',4));
+    ui->materialCostTextBox->setText(QString::number(0,'f',4));
 }
 
 
@@ -86,6 +115,7 @@ void MainWindow::CalculateFinalPrice()
         finalPrice = materialCost;
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
         ui->coatCostTextBox->setText(QString::number(0,'f',4));
+
     }
 }
 
@@ -480,7 +510,7 @@ void MainWindow::CalculateMass()
 {
     switch(ui->chooseMaterialShapeComboBox->currentIndex())
     {
-    case 0:
+    case 0://Pret
         materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(dim1,dim2));
         materialSurfaceArea = sa.CalculateRoundRod(dim1,dim2);
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
@@ -494,41 +524,119 @@ void MainWindow::CalculateMass()
         CalculateFinalEuroPrice();
 
         break;
-    case 1:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateRoundPipe(dim1,dim2,dim3)),'f',4));
+    case 1://Rura okragla
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateRoundPipe(dim1,dim2,dim3));
+        materialSurfaceArea = sa.CalculateRoundPipe(dim1,dim2,dim3);
+        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        finalPrice = materialCost;
+
+
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
+
+        CalculateFinalEuroPrice();
+
         break;
-    case 2:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalRod(dim1,dim2)),'f',4));
+    case 2:// Pret szesciokatny
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalRod(dim1,dim2));
+        materialSurfaceArea = sa.CalculateHexagonalRod(dim1,dim2);
+        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        finalPrice = materialCost;
+
+
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
+
+        CalculateFinalEuroPrice();
+
         break;
-    case 3:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalPipe(dim1,dim2,dim3)),'f',4));
+    case 3://Rura szesciokatna
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalPipe(dim1,dim2,dim3));
+        materialSurfaceArea = sa.CalculateHexagonalPipe(dim1,dim2,dim3);
+        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        finalPrice = materialCost;
+
+
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
+
+        CalculateFinalEuroPrice();
+
         break;
-    case 4:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateSquareRod(dim1,dim2)),'f',4));
+    case 4://Pret kwadratory
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateSquareRod(dim1,dim2));
+        materialSurfaceArea = sa.CalculateSquareRod(dim1,dim2);
+        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        finalPrice = materialCost;
+
+
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
+
+        CalculateFinalEuroPrice();
+
         break;
-    case 5:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculatePlate(dim1,dim2,dim3)),'f',4));
+    case 5://Blacha/Plaskownik
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculatePlate(dim1,dim2,dim3));
+        materialSurfaceArea = sa.CalculatePlate(dim1,dim2,dim3);
+        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        finalPrice = materialCost;
+
+
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
+
+        CalculateFinalEuroPrice();
+
         break;
-    case 6:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateSquareProfile(dim1,dim2,dim3,dim4)),'f',4));
+    case 6://Profil zamkniety
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateSquareProfile(dim1,dim2,dim3,dim4));
+        materialSurfaceArea = sa.CalculateSquareProfile(dim1,dim2,dim3,dim4);
+        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        finalPrice = materialCost;
+
+
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
+
+        CalculateFinalEuroPrice();
+
         break;
-    case 7:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateAngleProfile(dim1,dim2,dim3,dim4)),'f',4));
+    case 7://Katownik
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateAngleProfile(dim1,dim2,dim3,dim4));
+        materialSurfaceArea = sa.CalculateAngleProfile(dim1,dim2,dim3,dim4);
+        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        finalPrice = materialCost;
+
+
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
+
+        CalculateFinalEuroPrice();
+
         break;
-    case 8:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateCProfile(dim1,dim2,dim3,dim4)),'f',4));
-        break;
-    case 9:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.CalculateTProfile(dim1,dim2,dim3,dim4)),'f',4));
-        break;
-    case 10:
-        ui->materialMassTextBox->setText(QString::number(d.CalculateMaterialMass(materialDensity,v.Calculate2TProfile(dim1,dim2,dim3,dim4)),'f',4));
+    case 8://Ceownik
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateCProfile(dim1,dim2,dim3,dim4));
+        materialSurfaceArea = sa.CalculateCProfile(dim1,dim2,dim3,dim4);
+        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        finalPrice = materialCost;
+
+
+        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
+
+        CalculateFinalEuroPrice();
+
         break;
     }
-
-
-
-
 }
 
 

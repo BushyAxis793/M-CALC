@@ -51,5 +51,8 @@ private:
     void CalculateFinalEuroPrice();
     void CalculateFinalPrice();
     void SwitchCoatType();
+    void PreloadSummary();
+    void LoadEuroRate();
+    void SaveEuroRate();
 };
 #endif // MAINWINDOW_H
