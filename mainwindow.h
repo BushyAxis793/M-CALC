@@ -21,10 +21,6 @@ private slots:
 
     void on_chooseMaterialShapeComboBox_currentIndexChanged(int index);
 
-    void on_chooseMaterialTypeComboBox_currentIndexChanged(int index);
-
-    void on_chooseMaterialGenreComboBox_currentIndexChanged(int index);
-
     void on_dimension1TextBox_textEdited(const QString &arg1);
 
     void on_dimension2TextBox_textEdited(const QString &arg1);
@@ -40,6 +36,10 @@ private slots:
     void on_coatPriceTextBox_textEdited(const QString &arg1);
 
     void on_euroRateTextBox_textEdited(const QString &arg1);
+
+    void on_chooseMaterialGenreComboBox_currentIndexChanged(int index);
+
+    void on_chooseMaterialTypeComboBox_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

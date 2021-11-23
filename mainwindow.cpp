@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     OpenFile(":/Resources/MaterialGenres/Aluminium/AluminiumGenre.txt");
     materialDensity = genreStructList[0].materialDensity;
 
+
     //Wypełnianie comboboxów
     LoadComboboxes();
 
@@ -96,7 +97,6 @@ void MainWindow::PreloadSummary()
     ui->materialCostTextBox->setText(QString::number(0,'f',4));
 }
 
-
 void MainWindow::CalculateFinalPrice()
 {
     if(ui->coatCheckBox->isChecked())
@@ -125,7 +125,6 @@ void MainWindow::on_coatCheckBox_stateChanged()
     CalculateFinalEuroPrice();
 }
 
-
 void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
 {
 
@@ -145,7 +144,8 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
 
         dim1=0;
         dim2=0;
-        SwitchMaterialType();
+
+        //SwitchMaterialType();
 
         break;
     case 1://Rura okrągła
@@ -165,7 +165,8 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim1=0;
         dim2=0;
         dim3=0;
-        SwitchMaterialType();
+
+        //SwitchMaterialType();
 
         break;
     case 2://Pręt sześciokątny
@@ -181,7 +182,7 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
 
         dim1=0;
         dim2=0;
-        SwitchMaterialType();
+        //SwitchMaterialType();
 
         break;
     case 3://Rura sześciokątna
@@ -200,7 +201,7 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim1=0;
         dim2=0;
         dim3=0;
-        SwitchMaterialType();
+        //SwitchMaterialType();
 
         break;
     case 4://Pręt kwadratowy
@@ -214,7 +215,7 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
 
-        SwitchMaterialType();
+        //SwitchMaterialType();
 
         break;
     case 5://Blacha/Płaskownik
@@ -233,7 +234,7 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim1=0;
         dim2=0;
         dim3=0;
-        SwitchMaterialType();
+        //SwitchMaterialType();
 
         break;
     case 6://Profil kwadratowy
@@ -255,7 +256,7 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim2=0;
         dim3=0;
         dim4=0;
-        SwitchMaterialType();
+        //SwitchMaterialType();
 
         break;
     case 7://Kątownik/Teownik
@@ -273,7 +274,7 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(true);
         ui->dimension4TextBox->setVisible(true);
 
-        SwitchMaterialType();
+        //SwitchMaterialType();
 
         break;
     case 8://Ceownik/Dwuteownik
@@ -295,7 +296,7 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim2=0;
         dim3=0;
         dim4=0;
-        SwitchMaterialType();
+        //SwitchMaterialType();
 
         break;
     }
@@ -350,13 +351,17 @@ void MainWindow::SwitchMaterialType()
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->ALUMINIUM_GENRE);
+        SetMaterialDensity();
+        CalculateMass();
+
 
         break;
     case 1://Stal
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->STEEL_GENRE);
-
+        SetMaterialDensity();
+        CalculateMass();
 
         break;
     case 2://Stal nierdzewna
@@ -370,6 +375,7 @@ void MainWindow::SwitchMaterialType()
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->PLASTIC_GENRE);
+        SetMaterialDensity();
 
 
         break;
@@ -377,6 +383,7 @@ void MainWindow::SwitchMaterialType()
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->CASTIRON_GENRE);
+        SetMaterialDensity();
 
 
         break;
@@ -385,13 +392,6 @@ void MainWindow::SwitchMaterialType()
 
     delete mg;
 }
-
-void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
-{
-
-    //SwitchMaterialType();
-}
-
 void MainWindow::OpenFile(QString filePath)
 {
     MaterialsGenre *mg = new MaterialsGenre();
@@ -434,10 +434,6 @@ void MainWindow::OpenFile(QString filePath)
 
 }
 
-void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
-{
-
-}
 
 void MainWindow::SetMaterialDensity()
 {
@@ -511,6 +507,7 @@ void MainWindow::CalculateMass()
     switch(ui->chooseMaterialShapeComboBox->currentIndex())
     {
     case 0://Pret
+
         materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(dim1,dim2));
         materialSurfaceArea = sa.CalculateRoundRod(dim1,dim2);
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
@@ -701,5 +698,20 @@ void MainWindow::on_euroRateTextBox_textEdited(const QString &arg1)
     euroRate = tempString.toFloat();
 
     CalculateFinalEuroPrice();
+}
+
+
+void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
+{
+
+    CalculateMass();
+    qDebug()<<materialDensity;
+}
+
+
+void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
+{
+    SwitchMaterialType();
+
 }
 
