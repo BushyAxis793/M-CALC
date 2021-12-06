@@ -20,6 +20,7 @@ Density d;
 Surface_Area sa;
 Coating_Area ca;
 QSettings settings("P.W.U.H. METPOL","M-CALC");
+QString tempString;
 double materialDensity=0;
 float materialSurfaceArea=0;
 float materialVolume=0;
@@ -34,6 +35,7 @@ float finalPriceEuro=0;
 float dim1=0,dim2=0,dim3=0,dim4=0,price=0;
 float euroRate = 0;
 
+int numberOfZeroGenre=0;
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -43,8 +45,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     OpenFile(":/Resources/MaterialGenres/Aluminium/AluminiumGenre.txt");
-    materialDensity = genreStructList[0].materialDensity;
-
 
     //Wypełnianie comboboxów
     LoadComboboxes();
@@ -119,6 +119,12 @@ void MainWindow::CalculateFinalPrice()
     }
 }
 
+float MainWindow::ReplaceComma(QString tempString)
+{
+    tempString.replace(",",".");
+    return tempString.toFloat();
+}
+
 void MainWindow::on_coatCheckBox_stateChanged()
 {
     CalculateFinalPrice();
@@ -127,7 +133,6 @@ void MainWindow::on_coatCheckBox_stateChanged()
 
 void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
 {
-
 
     switch(ui->chooseMaterialShapeComboBox->currentIndex())
     {
@@ -353,7 +358,7 @@ void MainWindow::SwitchMaterialType()
         OpenFile(mg->ALUMINIUM_GENRE);
         SetMaterialDensity();
         CalculateMass();
-
+        numberOfZeroGenre=2;
 
         break;
     case 1://Stal
@@ -362,13 +367,16 @@ void MainWindow::SwitchMaterialType()
         OpenFile(mg->STEEL_GENRE);
         SetMaterialDensity();
         CalculateMass();
+        numberOfZeroGenre=2;
 
         break;
     case 2://Stal nierdzewna
         ui->chooseMaterialGenreComboBox->clear();
         genreStructList.clear();
         OpenFile(mg->STAINLESSSTEEL_GENRE);
-
+        SetMaterialDensity();
+        CalculateMass();
+        numberOfZeroGenre=2;
 
         break;
     case 3://Plastik
@@ -376,7 +384,9 @@ void MainWindow::SwitchMaterialType()
         genreStructList.clear();
         OpenFile(mg->PLASTIC_GENRE);
         SetMaterialDensity();
-
+        SetMaterialDensity();
+        CalculateMass();
+        numberOfZeroGenre=2;
 
         break;
     case 4://Żeliwo
@@ -384,7 +394,9 @@ void MainWindow::SwitchMaterialType()
         genreStructList.clear();
         OpenFile(mg->CASTIRON_GENRE);
         SetMaterialDensity();
-
+        SetMaterialDensity();
+        CalculateMass();
+        numberOfZeroGenre=2;
 
         break;
 
@@ -392,6 +404,7 @@ void MainWindow::SwitchMaterialType()
 
     delete mg;
 }
+
 void MainWindow::OpenFile(QString filePath)
 {
     MaterialsGenre *mg = new MaterialsGenre();
@@ -434,16 +447,13 @@ void MainWindow::OpenFile(QString filePath)
 
 }
 
-
 void MainWindow::SetMaterialDensity()
 {
-
     for (int i=0;i<=ui->chooseMaterialGenreComboBox->currentIndex() ;i++ ) {
 
         materialDensity = genreStructList[i].materialDensity;
-
+        CalculateMass();
     }
-
 }
 
 #pragma region DIMENSIONS: Text Boxes Change Value{
@@ -636,7 +646,6 @@ void MainWindow::CalculateMass()
     }
 }
 
-
 void MainWindow::SwitchCoatType()
 {
     switch (ui->coatTypeComboBox->currentIndex())
@@ -670,44 +679,46 @@ void MainWindow::SwitchCoatType()
 
 void MainWindow::on_coatTypeComboBox_currentIndexChanged(int index)
 {
-
-    CalculateFinalEuroPrice();
     CalculateFinalEuroPrice();
 
     SwitchCoatType();
 }
-
 
 void MainWindow::on_coatPriceTextBox_textEdited(const QString &arg1)
 {
-    QString tempString = ui->coatPriceTextBox->text();
-    tempString.replace(",",".");
-    coatingPrice = tempString.toFloat();
+    tempString = ui->coatPriceTextBox->text();
+    coatingPrice = ReplaceComma(tempString);
 
     SwitchCoatType();
     CalculateFinalPrice();
-
-
 }
-
 
 void MainWindow::on_euroRateTextBox_textEdited(const QString &arg1)
 {
-    QString tempString = ui->euroRateTextBox->text();
-    tempString.replace(",",".");
-    euroRate = tempString.toFloat();
+    tempString = ui->euroRateTextBox->text();
+    euroRate = ReplaceComma(tempString);
 
     CalculateFinalEuroPrice();
 }
 
-
 void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
 {
+    if(ui->chooseMaterialGenreComboBox->currentIndex()==0)
+    {
+        numberOfZeroGenre++;
+        qDebug()<<numberOfZeroGenre;
 
-    CalculateMass();
-    qDebug()<<materialDensity;
+        if(numberOfZeroGenre>2)
+        {
+            SetMaterialDensity();
+        }
+    }
+    else
+    {
+        SetMaterialDensity();
+    }
+
 }
-
 
 void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
 {

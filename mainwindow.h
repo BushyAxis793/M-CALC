@@ -54,5 +54,6 @@ private:
     void PreloadSummary();
     void LoadEuroRate();
     void SaveEuroRate();
+    float ReplaceComma(QString);
 };
 #endif // MAINWINDOW_H
