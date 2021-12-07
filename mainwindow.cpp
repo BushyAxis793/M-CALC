@@ -359,6 +359,8 @@ void MainWindow::SwitchMaterialType()
         SetMaterialDensity();
         CalculateMass();
         numberOfZeroGenre=2;
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
 
         break;
     case 1://Stal
@@ -368,6 +370,8 @@ void MainWindow::SwitchMaterialType()
         SetMaterialDensity();
         CalculateMass();
         numberOfZeroGenre=2;
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
 
         break;
     case 2://Stal nierdzewna
@@ -377,6 +381,8 @@ void MainWindow::SwitchMaterialType()
         SetMaterialDensity();
         CalculateMass();
         numberOfZeroGenre=2;
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
 
         break;
     case 3://Plastik
@@ -387,6 +393,8 @@ void MainWindow::SwitchMaterialType()
         SetMaterialDensity();
         CalculateMass();
         numberOfZeroGenre=2;
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
 
         break;
     case 4://Żeliwo
@@ -397,6 +405,8 @@ void MainWindow::SwitchMaterialType()
         SetMaterialDensity();
         CalculateMass();
         numberOfZeroGenre=2;
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
 
         break;
 
@@ -465,6 +475,7 @@ void MainWindow::on_dimension1TextBox_textEdited(const QString &arg1)
     dim1 = tempString.toFloat();
 
     CalculateMass();
+    CalculateFinalPrice();
     CalculateFinalEuroPrice();
 }
 
@@ -476,6 +487,7 @@ void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
 
 
     CalculateMass();
+    CalculateFinalPrice();
     CalculateFinalEuroPrice();
 }
 
@@ -486,6 +498,7 @@ void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
     dim3 = tempString.toFloat();
 
     CalculateMass();
+    CalculateFinalPrice();
     CalculateFinalEuroPrice();
 }
 
@@ -497,6 +510,7 @@ void MainWindow::on_dimension4TextBox_textEdited(const QString &arg1)
     dim4 = tempString.toFloat();
 
     CalculateMass();
+    CalculateFinalPrice();
     CalculateFinalEuroPrice();
 }
 
@@ -507,6 +521,7 @@ void MainWindow::on_materialPriceTextBox_textEdited(const QString &arg1)
     materialPrice = tempString.toFloat();
 
     CalculateMass();
+    CalculateFinalPrice();
     CalculateFinalEuroPrice();
 }
 
@@ -711,11 +726,15 @@ void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
         if(numberOfZeroGenre>2)
         {
             SetMaterialDensity();
+            CalculateFinalPrice();
+            CalculateFinalEuroPrice();
         }
     }
     else
     {
         SetMaterialDensity();
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
     }
 
 }

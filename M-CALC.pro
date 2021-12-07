@@ -39,3 +39,5 @@ DISTFILES +=
 
 RESOURCES += \
     MaterialGenres.qrc
+
+RC_ICONS = icon.ico
