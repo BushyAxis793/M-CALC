@@ -470,34 +470,34 @@ void MainWindow::SetMaterialDensity()
 
 void MainWindow::on_dimension1TextBox_textEdited(const QString &arg1)
 {
-    QString tempString = ui->dimension1TextBox->text();
-    tempString.replace(",",".");
-    dim1 = tempString.toFloat();
+    tempString = ui->dimension1TextBox->text();
+    dim1 = ReplaceComma(tempString);
 
     CalculateMass();
+    SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
 }
 
 void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
 {
-    QString tempString = ui->dimension2TextBox->text();
-    tempString.replace(",",".");
-    dim2 = tempString.toFloat();
+    tempString = ui->dimension2TextBox->text();
+    dim2 = ReplaceComma(tempString);
 
 
     CalculateMass();
+    SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
 }
 
 void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
 {
-    QString tempString = ui->dimension3TextBox->text();
-    tempString.replace(",",".");
-    dim3 = tempString.toFloat();
+    tempString = ui->dimension3TextBox->text();
+    dim3 = ReplaceComma(tempString);
 
     CalculateMass();
+    SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
 }
@@ -505,22 +505,22 @@ void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
 void MainWindow::on_dimension4TextBox_textEdited(const QString &arg1)
 {
 
-    QString tempString = ui->dimension4TextBox->text();
-    tempString.replace(",",".");
-    dim4 = tempString.toFloat();
+    tempString = ui->dimension4TextBox->text();
+    dim4 = ReplaceComma(tempString);
 
     CalculateMass();
+    SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
 }
 
 void MainWindow::on_materialPriceTextBox_textEdited(const QString &arg1)
 {
-    QString tempString = ui->materialPriceTextBox->text();
-    tempString.replace(",",".");
-    materialPrice = tempString.toFloat();
+    tempString = ui->materialPriceTextBox->text();
+    materialPrice = ReplaceComma(tempString);
 
     CalculateMass();
+    SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
 }
@@ -726,6 +726,7 @@ void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
         if(numberOfZeroGenre>2)
         {
             SetMaterialDensity();
+            SwitchCoatType();
             CalculateFinalPrice();
             CalculateFinalEuroPrice();
         }
@@ -733,6 +734,7 @@ void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
     else
     {
         SetMaterialDensity();
+        SwitchCoatType();
         CalculateFinalPrice();
         CalculateFinalEuroPrice();
     }
@@ -742,6 +744,7 @@ void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
 void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
 {
     SwitchMaterialType();
+    SwitchCoatType();
 
 }
 
