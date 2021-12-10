@@ -150,11 +150,10 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim1=0;
         dim2=0;
 
-        //SwitchMaterialType();
 
         break;
     case 1://Rura okrągła
-        ui->dimension1Label->setText("Średnica wew. [mm]");
+        ui->dimension1Label->setText("Średnica zew. [mm]");
         ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Grubość ściany [mm]");
         ui->dimension2TextBox->setText("");
@@ -171,7 +170,6 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim2=0;
         dim3=0;
 
-        //SwitchMaterialType();
 
         break;
     case 2://Pręt sześciokątny
@@ -187,13 +185,13 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
 
         dim1=0;
         dim2=0;
-        //SwitchMaterialType();
+
 
         break;
     case 3://Rura sześciokątna
         ui->dimension1Label->setText("Wysokość [mm]");
         ui->dimension1TextBox->setText("");
-        ui->dimension2Label->setText("Średnica zew. [mm]");
+        ui->dimension2Label->setText("Średnica wew. [mm]");
         ui->dimension2TextBox->setText("");
         ui->dimension3Label->setText("Długość [mm]");
         ui->dimension3TextBox->setText("");
@@ -206,11 +204,11 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim1=0;
         dim2=0;
         dim3=0;
-        //SwitchMaterialType();
+
 
         break;
     case 4://Pręt kwadratowy
-        ui->dimension1Label->setText("Wysokość [mm]");
+        ui->dimension1Label->setText("Szerokość [mm]");
         ui->dimension1TextBox->setText("");
         ui->dimension2Label->setText("Długość [mm]");
         ui->dimension2TextBox->setText("");
@@ -220,7 +218,8 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
 
-        //SwitchMaterialType();
+        dim1=0;
+        dim2=0;
 
         break;
     case 5://Blacha/Płaskownik
@@ -239,7 +238,7 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim1=0;
         dim2=0;
         dim3=0;
-        //SwitchMaterialType();
+
 
         break;
     case 6://Profil kwadratowy
@@ -261,7 +260,7 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim2=0;
         dim3=0;
         dim4=0;
-        //SwitchMaterialType();
+
 
         break;
     case 7://Kątownik/Teownik
@@ -279,7 +278,10 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(true);
         ui->dimension4TextBox->setVisible(true);
 
-        //SwitchMaterialType();
+        dim1=0;
+        dim2=0;
+        dim3=0;
+        dim4=0;
 
         break;
     case 8://Ceownik/Dwuteownik
@@ -301,7 +303,7 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         dim2=0;
         dim3=0;
         dim4=0;
-        //SwitchMaterialType();
+
 
         break;
     }
