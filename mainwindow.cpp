@@ -525,6 +525,37 @@ void MainWindow::on_materialPriceTextBox_textEdited(const QString &arg1)
     SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
+
+    if(tempString!="")
+    {
+        ui->materialPriceEuroTextBox->setEnabled(false);
+    }
+    else
+    {
+        ui->materialPriceEuroTextBox->setEnabled(true);
+    }
+}
+
+void MainWindow::on_materialPriceEuroTextBox_textEdited(const QString &arg1)
+{
+    tempString = ui->materialPriceEuroTextBox->text();
+    materialPrice = ReplaceComma(tempString);
+
+    ///////https://cpp0x.pl/forum/temat/?id=23457
+
+    CalculateMass();
+    SwitchCoatType();
+    CalculateFinalPrice();
+    CalculateFinalEuroPrice();
+
+    if(tempString!="")
+    {
+        ui->materialPriceTextBox->setEnabled(false);
+    }
+    else
+    {
+        ui->materialPriceTextBox->setEnabled(true);
+    }
 }
 
 #pragma endregion}
@@ -749,4 +780,7 @@ void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
     SwitchCoatType();
 
 }
+
+
+
 

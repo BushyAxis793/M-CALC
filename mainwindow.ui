@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>509</width>
-    <height>571</height>
+    <height>626</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -101,7 +101,7 @@
       <x>20</x>
       <y>210</y>
       <width>221</width>
-      <height>341</height>
+      <height>291</height>
      </rect>
     </property>
     <property name="title">
@@ -244,7 +244,7 @@
       <x>260</x>
       <y>10</y>
       <width>221</width>
-      <height>441</height>
+      <height>491</height>
      </rect>
     </property>
     <property name="title">
@@ -420,7 +420,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLabel" name="euroRateLabel">
+    <widget class="QLabel" name="materialPriceLabel">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -443,12 +443,35 @@
       </rect>
      </property>
     </widget>
+    <widget class="QLineEdit" name="materialPriceEuroTextBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>450</y>
+       <width>181</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="materialPriceEuroLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>430</y>
+       <width>181</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Wprowadź cenę [€/kg]</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="euroRateGroupBox">
     <property name="geometry">
      <rect>
       <x>260</x>
-      <y>460</y>
+      <y>510</y>
       <width>221</width>
       <height>91</height>
      </rect>
@@ -466,7 +489,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLabel" name="materialPriceLabel">
+    <widget class="QLabel" name="euroRateLabel">
      <property name="geometry">
       <rect>
        <x>20</x>

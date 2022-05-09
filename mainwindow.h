@@ -41,6 +41,8 @@ private slots:
 
     void on_chooseMaterialTypeComboBox_currentIndexChanged(int index);
 
+    void on_materialPriceEuroTextBox_textEdited(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     void LoadComboboxes();
