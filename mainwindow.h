@@ -7,6 +7,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+class QNetworkAccessManager;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -57,5 +58,6 @@ private:
     void LoadEuroRate();
     void SaveEuroRate();
     float ReplaceComma(QString);
+    QNetworkAccessManager *manager;
 };
 #endif // MAINWINDOW_H

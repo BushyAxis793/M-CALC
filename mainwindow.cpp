@@ -13,6 +13,11 @@
 
 #include <QRegularExpression>
 #include <QSettings>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+
+
 
 QList<MaterialsGenre::Genre> genreStructList;
 Volume v;
@@ -55,6 +60,16 @@ MainWindow::MainWindow(QWidget *parent)
     PreloadSummary();
 
     LoadEuroRate();
+
+    manager = new QNetworkAccessManager(this);
+    connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
+    {
+        QByteArray data = reply->readAll();
+        QString str  = QString::fromLatin1(data);
+        ui->materialPriceEuroLabel->setText(str);
+    });
+
+    manager->get(QNetworkRequest(QUrl("http://api.nbp.pl/api/exchangerates/rates/a/nok/")));
 
 }
 
@@ -541,7 +556,7 @@ void MainWindow::on_materialPriceEuroTextBox_textEdited(const QString &arg1)
     tempString = ui->materialPriceEuroTextBox->text();
     materialPrice = ReplaceComma(tempString);
 
-    ///////https://cpp0x.pl/forum/temat/?id=23457
+
 
     CalculateMass();
     SwitchCoatType();
