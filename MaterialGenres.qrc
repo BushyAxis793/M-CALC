@@ -5,5 +5,9 @@
         <file>MaterialGenres/StainlessSteel/StainlessSteelGenre.txt</file>
         <file>MaterialGenres/Plastic/PlasticsGenre.txt</file>
         <file>MaterialGenres/CastIron/CastIronGenre.txt</file>
+        <file>MaterialGenres/Bronze/BronzeGenre.txt</file>
+        <file>MaterialGenres/Copper/CopperGenre.txt</file>
+        <file>MaterialGenres/Brass/BrassGenre.txt</file>
+        <file>MaterialGenres/Lead/LeadGenre.txt</file>
     </qresource>
 </RCC>

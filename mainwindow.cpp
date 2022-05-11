@@ -16,6 +16,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QtXml>
+#include <QDebug>
 
 
 
@@ -43,11 +45,13 @@ float euroRate = 0;
 int numberOfZeroGenre=0;
 
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 
     OpenFile(":/Resources/MaterialGenres/Aluminium/AluminiumGenre.txt");
 
@@ -60,17 +64,48 @@ MainWindow::MainWindow(QWidget *parent)
     PreloadSummary();
 
     LoadEuroRate();
-
+/*
     manager = new QNetworkAccessManager(this);
     connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
     {
+
         QByteArray data = reply->readAll();
-        QString str  = QString::fromLatin1(data);
-        ui->materialPriceEuroLabel->setText(str);
+        QString stringData  = QString::fromLatin1(data);
+        //ui->materialPriceEuroLabel->setText(stringData);
+
     });
+
 
     manager->get(QNetworkRequest(QUrl("http://api.nbp.pl/api/exchangerates/rates/a/nok/")));
 
+*/
+
+}
+void traverse(const QDomNode &node)
+{
+    QDomNode domNode = node.firstChild();
+
+    while(!domNode.isNull())
+    {
+        if(domNode.isElement())
+        {
+            QDomElement domElement = domNode.toElement();
+            if(!domElement.isNull())
+            {
+
+                if(domElement.tagName()=="Mid")
+                {
+                    qDebug()<<domElement.attribute("name","");
+                }
+                else
+                {
+                    qDebug()<<domElement.tagName()<<":"<<domElement.text();
+                }
+            }
+            traverse(domNode);
+            domNode = domNode.nextSibling();
+        }
+    }
 }
 
 void MainWindow::SaveEuroRate()
@@ -349,6 +384,10 @@ void MainWindow::LoadComboboxes()
     ui->chooseMaterialTypeComboBox->addItem("Stal nierdzewna");
     ui->chooseMaterialTypeComboBox->addItem("Plastik");
     ui->chooseMaterialTypeComboBox->addItem("Żeliwo");
+    ui->chooseMaterialTypeComboBox->addItem("Brąz");
+    ui->chooseMaterialTypeComboBox->addItem("Miedź");
+    ui->chooseMaterialTypeComboBox->addItem("Mosiądz");
+    ui->chooseMaterialTypeComboBox->addItem("Ołów");
 }
 
 void MainWindow::AcceptOnlyDouble()
@@ -407,7 +446,6 @@ void MainWindow::SwitchMaterialType()
         genreStructList.clear();
         OpenFile(mg->PLASTIC_GENRE);
         SetMaterialDensity();
-        SetMaterialDensity();
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
@@ -419,12 +457,55 @@ void MainWindow::SwitchMaterialType()
         genreStructList.clear();
         OpenFile(mg->CASTIRON_GENRE);
         SetMaterialDensity();
-        SetMaterialDensity();
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
         CalculateFinalEuroPrice();
 
+        break;
+
+    case 5: //Brąz
+        ui->chooseMaterialGenreComboBox->clear();
+        genreStructList.clear();
+        OpenFile(mg->BRONZE_GENRE);
+        SetMaterialDensity();
+        CalculateMass();
+        numberOfZeroGenre=2;
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
+        break;
+
+    case 6: //Miedź
+        ui->chooseMaterialGenreComboBox->clear();
+        genreStructList.clear();
+        OpenFile(mg->COPPER_GENRE);
+        SetMaterialDensity();
+        CalculateMass();
+        numberOfZeroGenre=2;
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
+        break;
+
+    case 7: //Mosiądz
+        ui->chooseMaterialGenreComboBox->clear();
+        genreStructList.clear();
+        OpenFile(mg->BRASS_GENRE);
+        SetMaterialDensity();
+        CalculateMass();
+        numberOfZeroGenre=2;
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
+        break;
+
+    case 8: //Ołów
+        ui->chooseMaterialGenreComboBox->clear();
+        genreStructList.clear();
+        OpenFile(mg->LEAD_GENRE);
+        SetMaterialDensity();
+        CalculateMass();
+        numberOfZeroGenre=2;
+        CalculateFinalPrice();
+        CalculateFinalEuroPrice();
         break;
 
     }
@@ -553,8 +634,10 @@ void MainWindow::on_materialPriceTextBox_textEdited(const QString &arg1)
 
 void MainWindow::on_materialPriceEuroTextBox_textEdited(const QString &arg1)
 {
+    float materialPriceEuro=0;
     tempString = ui->materialPriceEuroTextBox->text();
-    materialPrice = ReplaceComma(tempString);
+    materialPriceEuro = ReplaceComma(tempString);
+    materialPrice = materialPriceEuro*euroRate;
 
 
 

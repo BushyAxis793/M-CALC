@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QtXml>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -44,6 +44,8 @@ private slots:
 
     void on_materialPriceEuroTextBox_textEdited(const QString &arg1);
 
+
+
 private:
     Ui::MainWindow *ui;
     void LoadComboboxes();
@@ -58,6 +60,7 @@ private:
     void LoadEuroRate();
     void SaveEuroRate();
     float ReplaceComma(QString);
+    void traverse(QDomNode);
     QNetworkAccessManager *manager;
 };
 #endif // MAINWINDOW_H
