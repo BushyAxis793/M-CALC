@@ -18,6 +18,7 @@
 #include <QNetworkRequest>
 #include <QtXml>
 #include <QDebug>
+#include <string.h>
 
 
 
@@ -64,48 +65,36 @@ MainWindow::MainWindow(QWidget *parent)
     PreloadSummary();
 
     LoadEuroRate();
-/*
+
+
     manager = new QNetworkAccessManager(this);
     connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
     {
 
         QByteArray data = reply->readAll();
         QString stringData  = QString::fromLatin1(data);
-        //ui->materialPriceEuroLabel->setText(stringData);
+        std::string stringDataStd = stringData.toStdString();
+        std::string searchingString = "<Mid>0.4544</Mid>";
+        if(stringDataStd.find(searchingString))
+        {
+            stringDataStd = searchingString;
+            stringDataStd.erase(stringDataStd.begin(), stringDataStd.end()-12);
+            stringDataStd.erase(6,6);
+            ui->euroRateTextBox->setText(stringDataStd.c_str());
+            euroRate = std::stof(stringDataStd);
+
+
+        }
+
 
     });
 
 
     manager->get(QNetworkRequest(QUrl("http://api.nbp.pl/api/exchangerates/rates/a/nok/")));
 
-*/
 
-}
-void traverse(const QDomNode &node)
-{
-    QDomNode domNode = node.firstChild();
 
-    while(!domNode.isNull())
-    {
-        if(domNode.isElement())
-        {
-            QDomElement domElement = domNode.toElement();
-            if(!domElement.isNull())
-            {
 
-                if(domElement.tagName()=="Mid")
-                {
-                    qDebug()<<domElement.attribute("name","");
-                }
-                else
-                {
-                    qDebug()<<domElement.tagName()<<":"<<domElement.text();
-                }
-            }
-            traverse(domNode);
-            domNode = domNode.nextSibling();
-        }
-    }
 }
 
 void MainWindow::SaveEuroRate()
@@ -115,8 +104,8 @@ void MainWindow::SaveEuroRate()
 
 void MainWindow::LoadEuroRate()
 {
-    euroRate = settings.value("euroRate",euroRate).toFloat();
-    ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
+    //euroRate = settings.value("euroRate",euroRate).toFloat();
+    //ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
 }
 
 MainWindow::~MainWindow()

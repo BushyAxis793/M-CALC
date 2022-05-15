@@ -60,7 +60,6 @@ private:
     void LoadEuroRate();
     void SaveEuroRate();
     float ReplaceComma(QString);
-    void traverse(QDomNode);
     QNetworkAccessManager *manager;
 };
 #endif // MAINWINDOW_H
