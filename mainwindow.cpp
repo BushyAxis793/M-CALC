@@ -19,6 +19,10 @@
 #include <QtXml>
 #include <QDebug>
 #include <string.h>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 
 
 
@@ -44,6 +48,7 @@ float dim1=0,dim2=0,dim3=0,dim4=0,price=0;
 float euroRate = 0;
 
 int numberOfZeroGenre=0;
+QString stringData{};
 
 
 
@@ -67,30 +72,50 @@ MainWindow::MainWindow(QWidget *parent)
     LoadEuroRate();
 
 
-    manager = new QNetworkAccessManager(this);
-    connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
-    {
-
-        QByteArray data = reply->readAll();
-        QString stringData  = QString::fromLatin1(data);
-        std::string stringDataStd = stringData.toStdString();
-        std::string searchingString = "<Mid>0.4544</Mid>";
-        if(stringDataStd.find(searchingString))
-        {
-            stringDataStd = searchingString;
-            stringDataStd.erase(stringDataStd.begin(), stringDataStd.end()-12);
-            stringDataStd.erase(6,6);
-            ui->euroRateTextBox->setText(stringDataStd.c_str());
-            euroRate = std::stof(stringDataStd);
 
 
-        }
 
 
-    });
+  manager = new QNetworkAccessManager(this);
+  connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
+  {
+
+      stringData = reply->readAll();
+      QFile qFile("temp.json");
+      QTextStream stream(&qFile);
+      stream<<stringData;
+      if(qFile.open(QIODevice::ReadOnly|QIODevice::Text))
+      {
+          QByteArray bytes = qFile.readAll();
+          qFile.close();
+          QJsonParseError error;
+          QJsonDocument document = QJsonDocument::fromJson(bytes,&error);
+          if(document.isNull())
+          {
+              qDebug()<<"Error";
+          }
+          QJsonObject obj = document.object();
+          QVector<QPointF> listPOints;
+          QJsonArray array = obj.value("mid").toArray();
+          qDebug()<<array.size();
+      }
+
+//      QJsonDocument jsonDocument = QJsonDocument::fromJson(stringData.toUtf8());
+//      QJsonObject jsonObj;
+//      jsonObj = jsonDocument.object();
+
+//      QJsonValue jsonVal;
+//      QTextStream textStream(stdout);
+
+//      jsonVal = jsonObj.value("Code");
+//      textStream << jsonVal.toString();
+
+  });
 
 
-    manager->get(QNetworkRequest(QUrl("http://api.nbp.pl/api/exchangerates/rates/a/nok/")));
+    manager->get(QNetworkRequest(QUrl("http://api.nbp.pl/api/exchangerates/rates/a/eur/")));
+
+
 
 
 
