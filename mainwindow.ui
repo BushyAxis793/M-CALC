@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>509</width>
-    <height>626</height>
+    <height>674</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -101,7 +101,7 @@
       <x>20</x>
       <y>210</y>
       <width>221</width>
-      <height>291</height>
+      <height>341</height>
      </rect>
     </property>
     <property name="title">
@@ -235,6 +235,32 @@
      </property>
      <property name="text">
       <string>Cena końcowa [euro]</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="amountMaterialNeededTextBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>300</y>
+       <width>181</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="amountMaterialNeededLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>280</y>
+       <width>181</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Zapotrzebowanie [mm]</string>
      </property>
     </widget>
    </widget>
@@ -420,40 +446,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLabel" name="materialPriceLabel">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>380</y>
-       <width>181</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Wprowadź cenę [zł/kg]</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="materialPriceTextBox">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>400</y>
-       <width>181</width>
-       <height>21</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="materialPriceEuroTextBox">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>450</y>
-       <width>181</width>
-       <height>21</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="materialPriceEuroLabel">
+    <widget class="QLabel" name="quantityMaterialLabel">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -463,15 +456,25 @@
       </rect>
      </property>
      <property name="text">
-      <string>Wprowadź cenę [€/kg]</string>
+      <string>Ilość [sztuki]</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="quantityMaterialTextBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>450</y>
+       <width>181</width>
+       <height>21</height>
+      </rect>
      </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="euroRateGroupBox">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>510</y>
+      <x>20</x>
+      <y>560</y>
       <width>221</width>
       <height>91</height>
      </rect>
@@ -480,6 +483,9 @@
      <string>Ustawienia waluty</string>
     </property>
     <widget class="QLineEdit" name="euroRateTextBox">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -487,6 +493,9 @@
        <width>181</width>
        <height>21</height>
       </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QLabel" name="euroRateLabel">
@@ -500,6 +509,65 @@
      </property>
      <property name="text">
       <string>Kurs euro [€]</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="priceGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>510</y>
+      <width>221</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Cena materiału</string>
+    </property>
+    <widget class="QLineEdit" name="materialPriceEuroTextBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>100</y>
+       <width>181</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="materialPriceLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>181</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Wprowadź cenę [zł/kg]</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="materialPriceEuroLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>181</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Wprowadź cenę [€/kg]</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="materialPriceTextBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>181</width>
+       <height>21</height>
+      </rect>
      </property>
     </widget>
    </widget>

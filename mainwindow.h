@@ -3,6 +3,18 @@
 
 #include <QMainWindow>
 #include <QtXml>
+#include <QDomElement>
+#include <QRegularExpression>
+#include <QSettings>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QtXml>
+#include <QDebug>
+#include <string.h>
+#include <QDomElement>
+#include <QDomDocument>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -46,6 +58,8 @@ private slots:
 
 
 
+    void on_quantityMaterialTextBox_textEdited(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     void LoadComboboxes();
@@ -61,5 +75,7 @@ private:
     void SaveEuroRate();
     float ReplaceComma(QString);
     QNetworkAccessManager *manager;
+    void DownloadEuroRate();
+
 };
 #endif // MAINWINDOW_H

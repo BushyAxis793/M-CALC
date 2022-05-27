@@ -19,10 +19,12 @@
 #include <QtXml>
 #include <QDebug>
 #include <string.h>
-#include <QJsonDocument>
-#include <QJsonArray>
+#include <QDomElement>
+#include <QDomDocument>
+#include <QFile>
+#include <QByteArray>
 #include <QJsonObject>
-#include <QJsonValue>
+#include <QJsonDocument>
 
 
 
@@ -48,7 +50,8 @@ float dim1=0,dim2=0,dim3=0,dim4=0,price=0;
 float euroRate = 0;
 
 int numberOfZeroGenre=0;
-QString stringData{};
+bool isConnection;
+
 
 
 
@@ -57,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 
 
     OpenFile(":/Resources/MaterialGenres/Aluminium/AluminiumGenre.txt");
@@ -69,51 +73,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     PreloadSummary();
 
-    LoadEuroRate();
+
+    DownloadEuroRate();
 
 
-
-
-
-
-  manager = new QNetworkAccessManager(this);
-  connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
-  {
-
-      stringData = reply->readAll();
-      QFile qFile("temp.json");
-      QTextStream stream(&qFile);
-      stream<<stringData;
-      if(qFile.open(QIODevice::ReadOnly|QIODevice::Text))
-      {
-          QByteArray bytes = qFile.readAll();
-          qFile.close();
-          QJsonParseError error;
-          QJsonDocument document = QJsonDocument::fromJson(bytes,&error);
-          if(document.isNull())
-          {
-              qDebug()<<"Error";
-          }
-          QJsonObject obj = document.object();
-          QVector<QPointF> listPOints;
-          QJsonArray array = obj.value("mid").toArray();
-          qDebug()<<array.size();
-      }
-
-//      QJsonDocument jsonDocument = QJsonDocument::fromJson(stringData.toUtf8());
-//      QJsonObject jsonObj;
-//      jsonObj = jsonDocument.object();
-
-//      QJsonValue jsonVal;
-//      QTextStream textStream(stdout);
-
-//      jsonVal = jsonObj.value("Code");
-//      textStream << jsonVal.toString();
-
-  });
-
-
-    manager->get(QNetworkRequest(QUrl("http://api.nbp.pl/api/exchangerates/rates/a/eur/")));
 
 
 
@@ -121,6 +84,66 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 }
+
+void MainWindow::DownloadEuroRate()
+{
+    manager = new QNetworkAccessManager(this);
+    connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
+    {
+            if(reply->bytesAvailable())
+            {
+                isConnection=true;
+            }else
+            {
+                isConnection=false;
+            }
+
+          QString  stringData = reply->readAll();
+          QFile file("temp.json");
+          QTextStream stream(&file);
+          if(file.open(QIODevice::WriteOnly|QIODevice::Text))
+          {
+              stream<<stringData;
+          }
+
+          file.close();
+
+          QJsonDocument doc = QJsonDocument::fromJson(stringData.toUtf8());
+
+          QJsonObject rootObj = doc.object();
+
+
+          QJsonValue rates = rootObj.value("rates");
+
+          if (rates.type() == QJsonValue::Array) {
+
+              QJsonArray ratesArray = rates.toArray();
+
+              for (int i = 0; i < ratesArray.count(); i++) {
+
+                  QJsonValue ratesChild = ratesArray.at(i);
+
+                  if (ratesChild.type() == QJsonValue::Object) {
+
+                      QJsonObject ratesObj = ratesChild.toObject();
+
+                      QJsonValue midValue = ratesObj.value("mid");
+                      euroRate = midValue.toDouble();
+                      LoadEuroRate();
+
+                  }
+              }
+          }
+
+
+
+    });
+
+
+   manager->get(QNetworkRequest(QUrl("http://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json")));
+}
+
+
 
 void MainWindow::SaveEuroRate()
 {
@@ -129,8 +152,16 @@ void MainWindow::SaveEuroRate()
 
 void MainWindow::LoadEuroRate()
 {
-    //euroRate = settings.value("euroRate",euroRate).toFloat();
-    //ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
+    if(isConnection)
+    {
+        ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
+    }
+    else
+    {
+        euroRate = settings.value("euroRate",euroRate).toFloat();
+        ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
+
+    }
 }
 
 MainWindow::~MainWindow()
@@ -413,6 +444,7 @@ void MainWindow::AcceptOnlyDouble()
     ui->dimension4TextBox->setValidator(new QDoubleValidator(0,100,2,this));
     ui->materialPriceTextBox->setValidator(new QDoubleValidator(0,100,2,this));
     ui->euroRateTextBox->setValidator(new QDoubleValidator(0,100,2,this));
+    ui->quantityMaterialTextBox->setValidator(new QIntValidator(1,9999,this));
 
 }
 
@@ -895,4 +927,20 @@ void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
 
 
 
+
+
+void MainWindow::on_quantityMaterialTextBox_textEdited(const QString &arg1)
+{
+    if(ui->quantityMaterialTextBox->text()!="")
+    {
+        std::list<float> dimensionsList {dim1, dim2,dim3, dim4};
+        std::list<float>::iterator it;
+        for(it = dimensionsList.begin(); it!=dimensionsList.end(); ++it)
+        {
+            //
+        }
+    }
+
+
+}
 
