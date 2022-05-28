@@ -56,8 +56,6 @@ private slots:
 
     void on_materialPriceEuroTextBox_textEdited(const QString &arg1);
 
-
-
     void on_quantityMaterialTextBox_textEdited(const QString &arg1);
 
 private:
@@ -76,6 +74,7 @@ private:
     float ReplaceComma(QString);
     QNetworkAccessManager *manager;
     void DownloadEuroRate();
+    void CalculateMaterialNeeded();
 
 };
 #endif // MAINWINDOW_H

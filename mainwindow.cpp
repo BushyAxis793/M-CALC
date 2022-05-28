@@ -190,6 +190,7 @@ void MainWindow::PreloadSummary()
     ui->finalPriceEuroTextBox->setText(QString::number(0,'f',4));
     ui->materialMassTextBox->setText(QString::number(0,'f',4));
     ui->materialCostTextBox->setText(QString::number(0,'f',4));
+    ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
 }
 
 void MainWindow::CalculateFinalPrice()
@@ -621,6 +622,7 @@ void MainWindow::on_dimension1TextBox_textEdited(const QString &arg1)
     SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
+    CalculateMaterialNeeded();
 }
 
 void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
@@ -633,6 +635,7 @@ void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
     SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
+    CalculateMaterialNeeded();
 }
 
 void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
@@ -644,6 +647,7 @@ void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
     SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
+    CalculateMaterialNeeded();
 }
 
 void MainWindow::on_dimension4TextBox_textEdited(const QString &arg1)
@@ -656,6 +660,7 @@ void MainWindow::on_dimension4TextBox_textEdited(const QString &arg1)
     SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
+    CalculateMaterialNeeded();
 }
 
 void MainWindow::on_materialPriceTextBox_textEdited(const QString &arg1)
@@ -933,14 +938,18 @@ void MainWindow::on_quantityMaterialTextBox_textEdited(const QString &arg1)
 {
     if(ui->quantityMaterialTextBox->text()!="")
     {
-        std::list<float> dimensionsList {dim1, dim2,dim3, dim4};
-        std::list<float>::iterator it;
-        for(it = dimensionsList.begin(); it!=dimensionsList.end(); ++it)
-        {
-            //
-        }
+        CalculateMaterialNeeded();
     }
 
 
 }
 
+void MainWindow::CalculateMaterialNeeded()
+{
+    auto quantity = ui->quantityMaterialTextBox->text().toInt();
+    std::list<float> dimensionsList {dim1, dim2,dim3, dim4};
+    std::list<float>::iterator it;
+    auto value = std::max_element(dimensionsList.begin(),dimensionsList.end());
+    auto tempVal = quantity* (*value);
+    ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',4));
+}
