@@ -622,7 +622,7 @@ void MainWindow::on_dimension1TextBox_textEdited(const QString &arg1)
     SwitchCoatType();
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
-    CalculateMaterialNeeded();
+
 }
 
 void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
@@ -636,6 +636,9 @@ void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
     CalculateMaterialNeeded();
+    if(ui->quantityMaterialTextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+
+
 }
 
 void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
@@ -648,6 +651,8 @@ void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
     CalculateMaterialNeeded();
+    if(ui->quantityMaterialTextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+
 }
 
 void MainWindow::on_dimension4TextBox_textEdited(const QString &arg1)
@@ -661,6 +666,8 @@ void MainWindow::on_dimension4TextBox_textEdited(const QString &arg1)
     CalculateFinalPrice();
     CalculateFinalEuroPrice();
     CalculateMaterialNeeded();
+    if(ui->quantityMaterialTextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+
 }
 
 void MainWindow::on_materialPriceTextBox_textEdited(const QString &arg1)
@@ -938,8 +945,14 @@ void MainWindow::on_quantityMaterialTextBox_textEdited(const QString &arg1)
 {
     if(ui->quantityMaterialTextBox->text()!="")
     {
+        ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',0));
         CalculateMaterialNeeded();
     }
+    else
+    {
+        ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+    }
+
 
 
 }
@@ -947,9 +960,66 @@ void MainWindow::on_quantityMaterialTextBox_textEdited(const QString &arg1)
 void MainWindow::CalculateMaterialNeeded()
 {
     auto quantity = ui->quantityMaterialTextBox->text().toInt();
-    std::list<float> dimensionsList {dim1, dim2,dim3, dim4};
-    std::list<float>::iterator it;
-    auto value = std::max_element(dimensionsList.begin(),dimensionsList.end());
-    auto tempVal = quantity* (*value);
-    ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',4));
+    float tempVal{0};
+
+    switch (ui->chooseMaterialShapeComboBox->currentIndex()) {
+    case 0:
+        tempVal = quantity*dim2;
+        ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
+        ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
+        if(ui->dimension2TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+
+        break;
+    case 1:
+        tempVal = quantity*dim3;
+        ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
+        ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
+        if(ui->dimension3TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+        break;
+    case 2:
+        tempVal = quantity*dim2;
+        ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
+        ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
+        if(ui->dimension2TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+        break;
+    case 3:
+        tempVal = quantity*dim3;
+        ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
+        ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
+        if(ui->dimension3TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+        break;
+    case 4:
+        tempVal = quantity*dim2;
+        ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
+        ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
+        if(ui->dimension2TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+        break;
+    case 5:
+        tempVal = quantity*dim3;
+        ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
+        ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
+        if(ui->dimension3TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+        break;
+    case 6:
+        tempVal = quantity*dim4;
+        ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
+        ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
+        if(ui->dimension4TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+        break;
+    case 7:
+        tempVal = quantity*dim4;
+        ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
+        ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
+        if(ui->dimension4TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+        break;
+    case 8:
+        tempVal = quantity*dim4;
+        ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
+        ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
+        if(ui->dimension4TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
+        break;
+
+
+    }
+
 }
