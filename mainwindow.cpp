@@ -5,11 +5,7 @@
 #include <QTextStream>
 #include <QtDebug>
 #include <QList>
-#include<QProcess>
-#include "Coating_Area.h"
-#include "Density.h"
-#include "Surface_Area.h"
-#include "Volume.h"
+#include <QProcess>
 
 #include <QRegularExpression>
 #include <QSettings>
@@ -25,6 +21,15 @@
 #include <QByteArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+
+#include "Coating_Area.h"
+#include "Density.h"
+#include "Surface_Area.h"
+#include "Volume.h"
+#include "Currencies.h"
+#include "Connections.h"
+
+
 
 
 
@@ -47,12 +52,13 @@ float coatingPrice=0;
 float finalPrice=0;
 float finalPriceEuro=0;
 float dim1=0,dim2=0,dim3=0,dim4=0,price=0;
-float euroRate = 0;
+
 
 int numberOfZeroGenre=0;
-bool isConnection;
 
 
+Currency::Euro currencyRate;
+Connection::Status connectStatus;
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -87,81 +93,84 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::DownloadEuroRate()
 {
-    manager = new QNetworkAccessManager(this);
-    connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
-    {
-            if(reply->bytesAvailable())
-            {
-                isConnection=true;
-            }else
-            {
-                isConnection=false;
-            }
-
-          QString  stringData = reply->readAll();
-          QFile file("temp.json");
-          QTextStream stream(&file);
-          if(file.open(QIODevice::WriteOnly|QIODevice::Text))
-          {
-              stream<<stringData;
-          }
-
-          file.close();
-
-          QJsonDocument doc = QJsonDocument::fromJson(stringData.toUtf8());
-
-          QJsonObject rootObj = doc.object();
+   manager = new QNetworkAccessManager(this);
+//    connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
+//    {
 
 
-          QJsonValue rates = rootObj.value("rates");
+//            if(reply->bytesAvailable())
+//            {
+//                connectStatus.SetConnectionStatus(true);
+//            }else
+//            {
+//                connectStatus.SetConnectionStatus(false);
+//            }
 
-          if (rates.type() == QJsonValue::Array) {
+//          QString  stringData = reply->readAll();
+//          QFile file("temp.json");
+//          QTextStream stream(&file);
+//          if(file.open(QIODevice::WriteOnly|QIODevice::Text))
+//          {
+//              stream<<stringData;
+//          }
 
-              QJsonArray ratesArray = rates.toArray();
+//          file.close();
 
-              for (int i = 0; i < ratesArray.count(); i++) {
+//          QJsonDocument doc = QJsonDocument::fromJson(stringData.toUtf8());
 
-                  QJsonValue ratesChild = ratesArray.at(i);
-
-                  if (ratesChild.type() == QJsonValue::Object) {
-
-                      QJsonObject ratesObj = ratesChild.toObject();
-
-                      QJsonValue midValue = ratesObj.value("mid");
-                      euroRate = midValue.toDouble();
-                      LoadEuroRate();
-
-                  }
-              }
-          }
-
-
-
-    });
+//          QJsonObject rootObj = doc.object();
 
 
-   manager->get(QNetworkRequest(QUrl("http://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json")));
+//          QJsonValue rates = rootObj.value("rates");
+
+//          if (rates.type() == QJsonValue::Array) {
+
+//              QJsonArray ratesArray = rates.toArray();
+
+//              for (int i = 0; i < ratesArray.count(); i++) {
+
+//                  QJsonValue ratesChild = ratesArray.at(i);
+
+//                  if (ratesChild.type() == QJsonValue::Object) {
+
+//                      QJsonObject ratesObj = ratesChild.toObject();
+
+//                      QJsonValue midValue = ratesObj.value("mid");
+//                      currencyRate.SetEuroRate(midValue.toDouble());
+//                      //LoadEuroRate();
+//                      currencyRate.LoadEuroRate(ui);
+
+//                  }
+//              }
+//          }
+
+
+
+//    });
+
+
+//   manager->get(QNetworkRequest(QUrl(currencyRate.GetEuroUrl())));
 }
 
 
 
 void MainWindow::SaveEuroRate()
 {
-    settings.setValue("euroRate",euroRate);
+    settings.setValue("euroRate",currencyRate.GetEuroRate());
 }
 
 void MainWindow::LoadEuroRate()
 {
-    if(isConnection)
-    {
-        ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
-    }
-    else
-    {
-        euroRate = settings.value("euroRate",euroRate).toFloat();
-        ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
+//    if(connectStatus.GetConnectionStatus())
+//    {
+//        ui->euroRateTextBox->setText(QString::number(currencyRate.GetEuroRate(),'f',2));
+//    }
+//    else
+//    {
+//        currencyRate.SetEuroRate(settings.value("euroRate",currencyRate.GetEuroRate()).toFloat());
+//        ui->euroRateTextBox->setText(QString::number(currencyRate.GetEuroRate(),'f',2));
 
-    }
+//    }
 }
 
 MainWindow::~MainWindow()
@@ -172,9 +181,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::CalculateFinalEuroPrice()
 {
-    if(euroRate!=0)
+    if(currencyRate.GetEuroRate()!=0)
     {
-        finalPriceEuro = finalPrice/euroRate;
+        finalPriceEuro = finalPrice/currencyRate.GetEuroRate();
     }
     else
     {
@@ -186,7 +195,7 @@ void MainWindow::CalculateFinalEuroPrice()
 void MainWindow::PreloadSummary()
 {
 
-    ui->euroRateTextBox->setText(QString::number(euroRate,'f',2));
+    ui->euroRateTextBox->setText(QString::number(currencyRate.GetEuroRate(),'f',2));
     ui->finalPriceEuroTextBox->setText(QString::number(0,'f',4));
     ui->materialMassTextBox->setText(QString::number(0,'f',4));
     ui->materialCostTextBox->setText(QString::number(0,'f',4));
@@ -695,7 +704,7 @@ void MainWindow::on_materialPriceEuroTextBox_textEdited(const QString &arg1)
     float materialPriceEuro=0;
     tempString = ui->materialPriceEuroTextBox->text();
     materialPriceEuro = ReplaceComma(tempString);
-    materialPrice = materialPriceEuro*euroRate;
+    materialPrice = materialPriceEuro*currencyRate.GetEuroRate();
 
 
 
@@ -900,7 +909,7 @@ void MainWindow::on_coatPriceTextBox_textEdited(const QString &arg1)
 void MainWindow::on_euroRateTextBox_textEdited(const QString &arg1)
 {
     tempString = ui->euroRateTextBox->text();
-    euroRate = ReplaceComma(tempString);
+    currencyRate.SetEuroRate(ReplaceComma(tempString));
 
     CalculateFinalEuroPrice();
 }

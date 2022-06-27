@@ -12,6 +12,8 @@ CONFIG += c++11
 SOURCES += \
     Calculations.cpp \
     Coating_Area.cpp \
+    Connections.cpp \
+    Currencies.cpp \
     Density.cpp \
     Surface_Area.cpp \
     Volume.cpp \
@@ -22,6 +24,8 @@ SOURCES += \
 HEADERS += \
     Calculations.h \
     Coating_Area.h \
+    Connections.h \
+    Currencies.h \
     Density.h \
     Surface_Area.h \
     Volume.h \
