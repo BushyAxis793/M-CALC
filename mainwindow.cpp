@@ -80,6 +80,8 @@ MainWindow::MainWindow(QWidget *parent)
     PreloadSummary();
 
 
+
+
     DownloadEuroRate();
 
 
@@ -93,70 +95,70 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::DownloadEuroRate()
 {
-   manager = new QNetworkAccessManager(this);
-//    connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
-//    {
+  manager = new QNetworkAccessManager(this);
+ connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
+ {
 
 
-//            if(reply->bytesAvailable())
-//            {
-//                connectStatus.SetConnectionStatus(true);
-//            }else
-//            {
-//                connectStatus.SetConnectionStatus(false);
-//            }
+         if(reply->bytesAvailable())
+         {
+             connectStatus.SetConnectionStatus(true);
+         }else
+         {
+             connectStatus.SetConnectionStatus(false);
+         }
 
-//          QString  stringData = reply->readAll();
-//          QFile file("temp.json");
-//          QTextStream stream(&file);
-//          if(file.open(QIODevice::WriteOnly|QIODevice::Text))
-//          {
-//              stream<<stringData;
-//          }
+       QString  stringData = reply->readAll();
+       QFile file("temp.json");
+       QTextStream stream(&file);
+       if(file.open(QIODevice::WriteOnly|QIODevice::Text))
+       {
+           stream<<stringData;
+       }
 
-//          file.close();
+       file.close();
 
-//          QJsonDocument doc = QJsonDocument::fromJson(stringData.toUtf8());
+       QJsonDocument doc = QJsonDocument::fromJson(stringData.toUtf8());
 
-//          QJsonObject rootObj = doc.object();
-
-
-//          QJsonValue rates = rootObj.value("rates");
-
-//          if (rates.type() == QJsonValue::Array) {
-
-//              QJsonArray ratesArray = rates.toArray();
-
-//              for (int i = 0; i < ratesArray.count(); i++) {
-
-//                  QJsonValue ratesChild = ratesArray.at(i);
-
-//                  if (ratesChild.type() == QJsonValue::Object) {
-
-//                      QJsonObject ratesObj = ratesChild.toObject();
-
-//                      QJsonValue midValue = ratesObj.value("mid");
-//                      currencyRate.SetEuroRate(midValue.toDouble());
-//                      //LoadEuroRate();
-//                      currencyRate.LoadEuroRate(ui);
-
-//                  }
-//              }
-//          }
+       QJsonObject rootObj = doc.object();
 
 
+       QJsonValue rates = rootObj.value("rates");
 
-//    });
+       if (rates.type() == QJsonValue::Array) {
+
+           QJsonArray ratesArray = rates.toArray();
+
+           for (int i = 0; i < ratesArray.count(); i++) {
+
+               QJsonValue ratesChild = ratesArray.at(i);
+
+               if (ratesChild.type() == QJsonValue::Object) {
+
+                   QJsonObject ratesObj = ratesChild.toObject();
+
+                   QJsonValue midValue = ratesObj.value("mid");
+                   currencyRate.SetEuroRate(midValue.toDouble());
+                   //LoadEuroRate();
+                   currencyRate.LoadEuroRate(ui);
+
+               }
+           }
+       }
 
 
-//   manager->get(QNetworkRequest(QUrl(currencyRate.GetEuroUrl())));
+
+ });
+
+
+manager->get(QNetworkRequest(QUrl(currencyRate.GetEuroUrl())));
 }
 
 
 
 void MainWindow::SaveEuroRate()
 {
-    settings.setValue("euroRate",currencyRate.GetEuroRate());
+    //settings.setValue("euroRate",currencyRate.GetEuroRate());
 }
 
 void MainWindow::LoadEuroRate()
@@ -175,7 +177,7 @@ void MainWindow::LoadEuroRate()
 
 MainWindow::~MainWindow()
 {
-    SaveEuroRate();
+    currencyRate.SaveEuroRate();
     delete ui;
 }
 

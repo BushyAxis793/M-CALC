@@ -2,25 +2,26 @@
 #define CURRENCIES_H
 
 
-#include <QSettings>
-#include <QString>
-#include <QMainWindow>
-#include <QDomElement>
-#include <QDomDocument>
-#include <QFile>
-#include <QByteArray>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QJsonValue>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkRequest>
 #include <QFile>
 #include <QTextStream>
 #include <QtDebug>
 #include <QList>
 #include <QProcess>
 #include <QRegularExpression>
+#include <QSettings>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QtXml>
+#include <QDebug>
+#include <string.h>
+#include <QDomElement>
+#include <QDomDocument>
+#include <QFile>
+#include <QByteArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QObject>
 
 
 
@@ -35,7 +36,7 @@ namespace Currency {
     private:
         float euroRate=0;
         QString const urlEuroString = "http://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json";
-        QNetworkAccessManager *manager;
+
     public:
         float GetEuroRate() const;
         void SetEuroRate(float);
@@ -43,8 +44,8 @@ namespace Currency {
         QString GetEuroUrl() const;
 
         void LoadEuroRate(Ui::MainWindow *ui);
+        void SaveEuroRate();
 
-        void DownloadEuroRate();
     };
 }
 
