@@ -4,196 +4,196 @@
 //Obliczanie objêtoœci materia³u - definicje
 
 //Prêt okr¹g³y
-float Volume::CalculateRoundRod(float diameter_out ,float length)
+float Volume::CalculateRoundRod(float &diameterOut ,float &length)
 {
-	float r = diameter_out/2;
+    float r = diameterOut/2;
     float l = length;
-    float circle_surface_area,  final_volume;
+    float circleSurfaceArea,  finalVolume = 0;
     
-    circle_surface_area = M_PI*pow(r,2);
+    circleSurfaceArea = M_PI*pow(r,2);
     
-    final_volume = circle_surface_area*l;
+    finalVolume = circleSurfaceArea*l;
   
-    return final_volume/1000000;
+    return finalVolume = 0/1000000;
 }
 
 //rura okr¹g³a
-float Volume::CalculateRoundPipe(float diameter_out,float wall_thickness,float length)
+float Volume::CalculateRoundPipe(float &diametrOut,float &wallThickness,float &length)
 {
-	float r_out = diameter_out/2;
-    float b = wall_thickness;
+    float r_out = diametrOut/2;
+    float b = wallThickness;
     float l = length;
-    float diameter_in = diameter_out-2*b;
+    float diameter_in = diametrOut-2*b;
     float r_in = diameter_in/2;
     
-    float circle_surface_area_out,circle_surface_area_in, volume_out,volume_in,final_volume; 
+    float circleSurfaceAreaOut,circleSurfaceAreaIn, volumeOut,volumeIn,finalVolume = 0;
     
-    circle_surface_area_out = M_PI*pow(r_out,2);
+    circleSurfaceAreaOut = M_PI*pow(r_out,2);
     
-    circle_surface_area_in =  M_PI*pow(r_in,2);
+    circleSurfaceAreaIn =  M_PI*pow(r_in,2);
     
-    volume_out = circle_surface_area_out*l;
+    volumeOut = circleSurfaceAreaOut*l;
     
-	volume_in = circle_surface_area_in*l;
+    volumeIn = circleSurfaceAreaIn*l;
     
-    final_volume = volume_out - volume_in;
+    finalVolume = volumeOut - volumeIn;
     
-    return final_volume/1000000;
+    return finalVolume/1000000;
 }
 
 //prêt szeœciok¹tny
-float Volume::CalculateHexagonalRod(float height, float length)
+float Volume::CalculateHexagonalRod(float &height, float &length)
 {
     float h = height;
     float l = length;
-    float side;
-    float final_volume;
+    float side = 0;
+    float finalVolume;
     
     side = h/sqrt(3);
     
-    final_volume = ((3*pow(side,2)*sqrt(3))/2)*l;
+    finalVolume = ((3*pow(side,2)*sqrt(3))/2)*l;
     
-    return final_volume/1000000;
+    return finalVolume/1000000;
 }
 
 //rura szeœciok¹tna
-float Volume::CalculateHexagonalPipe(float height,float diameter_in,float length)
+float Volume::CalculateHexagonalPipe(float &height,float &diameterIn,float &length)
 {
     float h = height;
-    float r_in = diameter_in/2;
+    float r_in = diameterIn/2;
     float l = length;
-    float circle_surface_area_in, side, volume_in,volume_out,final_volume;
+    float circleSurfaceAreaIn, side, volumeIn,volumeOut,finalVolume = 0;
     
    	side = h/sqrt(3);
     
-    volume_out = ((3*pow(side,2)*sqrt(3))/2)*l;
+    volumeOut = ((3*pow(side,2)*sqrt(3))/2)*l;
     
-    circle_surface_area_in = M_PI*pow(r_in,2);
+    circleSurfaceAreaIn = M_PI*pow(r_in,2);
     
-    volume_in = circle_surface_area_in * l;
+    volumeIn = circleSurfaceAreaIn * l;
     
-    final_volume = volume_out - volume_in;
+    finalVolume = volumeOut - volumeIn;
     
-    return final_volume/1000000;
+    return finalVolume = 0/1000000;
     
 }
 
 //prêt kwadratowy
-float Volume::CalculateSquareRod(float side,float length)
+float Volume::CalculateSquareRod(float &side,float &length)
 {
     float a = side;
     float l = length;
-    float final_volume;
+    float finalVolume = 0;
     
-    final_volume = pow(a,2)*l;
+    finalVolume = pow(a,2)*l;
     
-    return final_volume/1000000;
+    return finalVolume/1000000;
 }
 
 //blacha/plaskownik
-float Volume::CalculatePlate(float thickness,float width,float length)
+float Volume::CalculatePlate(float &thickness,float &width,float &length)
 {
     float a = width;
     float b = thickness;
     float c = length;
-    float final_volume;
+    float finalVolume = 0;
     
-    final_volume = a*b*c;
+    finalVolume = a*b*c;
     
-    return final_volume/1000000;
+    return finalVolume/1000000;
 }
 
 //profil kwadratowy
-float Volume::CalculateSquareProfile(float height,float width,float wall_thickness,float length)
+float Volume::CalculateSquareProfile(float &height,float &width,float &wallThickness,float &length)
 {
     float a = height;
     float b = width;
-    float c = wall_thickness;
+    float c = wallThickness;
     float l = length;
     float a_in = a-c*2;
     float b_in = b-c*2;
-    float volume_in,volume_out,final_volume;
+    float volumeIn,volumeOut,finalVolume = 0;
     
-    volume_out = a*b*l;
+    volumeOut = a*b*l;
     
-    volume_in = a_in*b_in*l;
+    volumeIn = a_in*b_in*l;
     
-    final_volume = volume_out - volume_in;
+    finalVolume = volumeOut - volumeIn;
     
-    return final_volume/1000000;
+    return finalVolume/1000000;
 }
 
 //k¹townik
-float Volume::CalculateAngleProfile(float height,float width,float wall_thickness,float length)
+float Volume::CalculateAngleProfile(float &height,float &width,float &wallThickness,float &length)
 {
 	float a = height;
     float b = width;
-    float c = wall_thickness;
+    float c = wallThickness;
     float l = length;
-    float volume_1,volume_2,final_volume;
+    float volume_1,volume_2,finalVolume = 0;
     
     volume_1 = a*c*l;
     
     volume_2 = (b-c)*c*l;
     
-    final_volume = volume_1 + volume_2;
+    finalVolume = volume_1 + volume_2;
     
-    return final_volume/1000000;
+    return finalVolume/1000000;
 
 }
 
 //ceownik
-float Volume::CalculateCProfile(float height,float width,float wall_thickness,float length)
+float Volume::CalculateCProfile(float &height,float &width,float &wallThickness,float &length)
 {
     float a = height;
     float b = width;
-    float c = wall_thickness;
+    float c = wallThickness;
     float l = length;
-    float volume_1,volume_2,final_volume;
+    float volume_1,volume_2,finalVolume = 0;
     
     volume_1 = (b-c)*c*l;
     
     volume_2 = a*c*l;
     
-    final_volume = volume_1*2 + volume_2;
+    finalVolume = volume_1*2 + volume_2;
     
-    return final_volume/1000000;
+    return finalVolume/1000000;
 }
 
 //teownik
-float Volume::CalculateTProfile(float height,float width,float wall_thickness,float length)
+float Volume::CalculateTProfile(float &height,float &width,float &wallThickness,float &length)
 {
 	float a = height;
     float b = width;
-    float c = wall_thickness;
+    float c = wallThickness;
     float l = length;
-    float volume_1,volume_2,final_volume;
+    float volume_1,volume_2,finalVolume = 0;
     
     volume_1 = a*c*l;
     
     volume_2 = (b-c)*c*l;
     
-    final_volume = volume_1 + volume_2;
+    finalVolume = volume_1 + volume_2;
     
-    return final_volume/1000000;
+    return finalVolume/1000000;
 }
 
 //dwuteownik
-float Volume::Calculate2TProfile(float height,float width,float wall_thickness,float length)
+float Volume::Calculate2TProfile(float &height,float &width,float &wallThickness,float &length)
 {
 	float a = height;
     float b = width;
-    float c = wall_thickness;
+    float c = wallThickness;
     float l = length;
-    float volume_1,volume_2,final_volume;
+    float volume_1,volume_2,finalVolume = 0;
     
     volume_1 = (b-c)*c*l;
     
     volume_2 = a*c*l;
     
-    final_volume = volume_1*2 + volume_2;
+    finalVolume = volume_1*2 + volume_2;
     
-    return final_volume/1000000;
+    return finalVolume/1000000;
 
 }
 

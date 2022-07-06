@@ -9,7 +9,7 @@ Calculations::MaterialGenre Calculations::GetGenre()
 
 void Calculations::SetGenre(string name, string genre, double density)
 {
-	mg.material_name = name;
-	mg.material_genre_name = genre;
-	mg.material_density = density;
+    mg.materialName = name;
+    mg.materialGenreName = genre;
+    mg.materialDensity = density;
 }

@@ -16,11 +16,11 @@ public:
 	struct MaterialGenre
 	{
 
-		string material_name;
-		string material_genre_name;
-		double material_density;
+        string materialName;
+        string materialGenreName;
+        double materialDensity;
 	};
-	list<MaterialGenre> MG;
+    list<MaterialGenre> materialGenreList;
 
 
 

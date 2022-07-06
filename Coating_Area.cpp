@@ -4,40 +4,40 @@
 //Obliczanie kosztu pow³oki
 
 //Anodowanie
-float Coating_Area::CalculateAnodizingCost(float surface_area, float anodizing_cost)
+float Coating_Area::CalculateAnodizingCost(float &surfaceArea, float &anodizingCost)
 {
     
-     float anodizig_final_Cost = surface_area*anodizing_cost;
+     float anodizingFinalCost = surfaceArea*anodizingCost;
      
-     return anodizig_final_Cost;
+     return anodizingFinalCost;
 }
 
 //Cynkowanie
-float Coating_Area::CalculateGalvanizingCost(float material_mass,float galvanizing_cost)
+float Coating_Area::CalculateGalvanizingCost(float &materialMass,float &galvanizingCost)
 {
-	float galvanizing_final_cost = material_mass * galvanizing_cost;
+    float galvanizingFinalCost = materialMass * galvanizingCost;
 	
-	return galvanizing_final_cost;
+    return galvanizingFinalCost;
 }
 
 //Hartowanie
-float Coating_Area::CalculateHardeningCost(float material_mass,float hardening_cost)
+float Coating_Area::CalculateHardeningCost(float &materialMass,float &harderingCost)
 {
-	float hardening_final_cost = material_mass * hardening_cost;
+    float harderingFinalCost = materialMass * harderingCost;
 	
-	return hardening_final_cost;
+    return harderingFinalCost;
 }
 
 //Czernienie
-float Coating_Area::CalculateBlackeningCost(float material_mass,float blackening_cost)
+float Coating_Area::CalculateBlackeningCost(float &materialMass,float &blackeningCost)
 {
-	float blackening_final_cost = material_mass * blackening_cost;
+    float blackeningFinalCost = materialMass * blackeningCost;
 	
-	return blackening_final_cost;
+    return blackeningFinalCost;
 }
 
 //Nawêglanie
-float Coating_Area::CalculateCarburizingCost(float material_mass,float carburizing_cost)
+float Coating_Area::CalculateCarburizingCost(float &material_mass,float &carburizing_cost)
 {
 	return 0;///Brak danych wymaganych do napisania algorytmu
 }

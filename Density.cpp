@@ -2,18 +2,19 @@
 
 
 
-float Density::CalculateMaterialMass(double material_density,float material_volume)
+float Density::CalculateMaterialMass(float materialDensity,float materialVolume)
 {
-	float final_material_mass = material_density * material_volume;
+
+    float finalMaterialMass = materialDensity * materialVolume;
 	
-	return final_material_mass;
+    return finalMaterialMass;
 }
 
-float Density::CalculateMaterialPrice(float material_mass,float mass_price)
+float Density::CalculateMaterialPrice(float materialMass,float massPrice)
 {
-	float final_material_price = material_mass * mass_price;
+    float finalMaterialPrice = materialMass * massPrice;
 	
-	return final_material_price;
+    return finalMaterialPrice;
 }
 
 

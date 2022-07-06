@@ -21,6 +21,7 @@
 #include <QByteArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QObject>
 
 #include "Coating_Area.h"
 #include "Density.h"
@@ -40,7 +41,7 @@ Surface_Area sa;
 Coating_Area ca;
 QSettings settings("P.W.U.H. METPOL","M-CALC");
 QString tempString;
-double materialDensity=0;
+float materialDensity=0;
 float materialSurfaceArea=0;
 float materialVolume=0;
 float materialCoatingArea=0;
@@ -67,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-
+    //connect(currencyRate,SIGNAL(LoadEuroRate()),ui->euroRateTextBox,SLOT(setText(QString)));
 
     OpenFile(":/Resources/MaterialGenres/Aluminium/AluminiumGenre.txt");
 
@@ -93,20 +94,23 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
+
+
 void MainWindow::DownloadEuroRate()
 {
   manager = new QNetworkAccessManager(this);
  connect(manager,&QNetworkAccessManager::finished,this,[&](QNetworkReply * reply)
  {
 
+       if(reply->bytesAvailable())
+       {
+           connectStatus.SetConnectionStatus(true);
 
-         if(reply->bytesAvailable())
-         {
-             connectStatus.SetConnectionStatus(true);
-         }else
-         {
-             connectStatus.SetConnectionStatus(false);
-         }
+       }else
+       {
+           connectStatus.SetConnectionStatus(false);
+       }
+
 
        QString  stringData = reply->readAll();
        QFile file("temp.json");
@@ -139,8 +143,10 @@ void MainWindow::DownloadEuroRate()
 
                    QJsonValue midValue = ratesObj.value("mid");
                    currencyRate.SetEuroRate(midValue.toDouble());
-                   //LoadEuroRate();
-                   currencyRate.LoadEuroRate(ui);
+                   LoadEuroRate();
+                   qDebug()<<currencyRate.GetEuroRate();
+
+
 
                }
            }
@@ -154,25 +160,23 @@ void MainWindow::DownloadEuroRate()
 manager->get(QNetworkRequest(QUrl(currencyRate.GetEuroUrl())));
 }
 
+void MainWindow::LoadEuroRate(){
+
+    qDebug()<<connectStatus.GetConnectionStatus();
+
+    if(connectStatus.GetConnectionStatus())
+    {
+        ui->euroRateTextBox->setText(QString::number(currencyRate.GetEuroRate(),'f',2));
+
+    }
+    else
+    {
+        currencyRate.SetEuroRate(settings.value("euroRate",currencyRate.GetEuroRate()).toFloat());
+        ui->euroRateTextBox->setText(QString::number(currencyRate.GetEuroRate(),'f',2));
+
+    }
 
 
-void MainWindow::SaveEuroRate()
-{
-    //settings.setValue("euroRate",currencyRate.GetEuroRate());
-}
-
-void MainWindow::LoadEuroRate()
-{
-//    if(connectStatus.GetConnectionStatus())
-//    {
-//        ui->euroRateTextBox->setText(QString::number(currencyRate.GetEuroRate(),'f',2));
-//    }
-//    else
-//    {
-//        currencyRate.SetEuroRate(settings.value("euroRate",currencyRate.GetEuroRate()).toFloat());
-//        ui->euroRateTextBox->setText(QString::number(currencyRate.GetEuroRate(),'f',2));
-
-//    }
 }
 
 MainWindow::~MainWindow()

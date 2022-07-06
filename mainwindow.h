@@ -69,12 +69,14 @@ private:
     void CalculateFinalPrice();
     void SwitchCoatType();
     void PreloadSummary();
-    void LoadEuroRate();
-    void SaveEuroRate();
     float ReplaceComma(QString);
     QNetworkAccessManager *manager;
     void DownloadEuroRate();
     void CalculateMaterialNeeded();
+    void LoadEuroRate();
+
+
+
 
 };
 #endif // MAINWINDOW_H
