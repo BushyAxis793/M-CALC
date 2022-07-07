@@ -69,9 +69,9 @@ double lead_density[1] =
 };
 
 public:
-float CalculateMaterialMass(float ,float);
+float CalculateMaterialMass(float& ,float);
 
-float CalculateMaterialPrice(float,float);
+float CalculateMaterialPrice(float&,float&);
 	
 };
 

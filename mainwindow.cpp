@@ -22,6 +22,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QObject>
+#include <algorithm>
 
 #include "Coating_Area.h"
 #include "Density.h"
@@ -29,6 +30,7 @@
 #include "Volume.h"
 #include "Currencies.h"
 #include "Connections.h"
+#include "Calculations.h"
 
 
 
@@ -187,15 +189,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::CalculateFinalEuroPrice()
 {
-    if(currencyRate.GetEuroRate()!=0)
-    {
-        finalPriceEuro = finalPrice/currencyRate.GetEuroRate();
-    }
-    else
-    {
-        finalPriceEuro =0;
-    }
-    ui->finalPriceEuroTextBox->setText(QString::number(finalPriceEuro,'f',4));
+    //Nie działa poprawić
+    unique_ptr<Calculations> calc (new(Calculations));
+    calc->CalculateFinalEuroPrice();
+    ui->finalPriceEuroTextBox->setText(QString::number(currencyRate.GetFinalPriceEuro(),'f',4));
 }
 
 void MainWindow::PreloadSummary()
@@ -214,8 +211,9 @@ void MainWindow::CalculateFinalPrice()
     {
         ui->coatTypeComboBox->setEnabled(true);
         ui->coatPriceTextBox->setEnabled(true);
-        finalPrice = materialCost + coatingCost;
-        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        currencyRate.SetFinalPrice(materialCost + coatingCost);
+        //finalPrice = materialCost + coatingCost;
+        ui->finalPriceTextBox->setText(QString::number(currencyRate.GetFinalPrice(),'f',4));
         ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
 
     }
@@ -223,8 +221,9 @@ void MainWindow::CalculateFinalPrice()
     {
         ui->coatTypeComboBox->setEnabled(false);
         ui->coatPriceTextBox->setEnabled(false);
-        finalPrice = materialCost;
-        ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
+        currencyRate.SetFinalPrice(materialCost);
+        //finalPrice = materialCost;
+        ui->finalPriceTextBox->setText(QString::number(currencyRate.GetFinalPrice(),'f',4));
         ui->coatCostTextBox->setText(QString::number(0,'f',4));
 
     }
@@ -742,6 +741,8 @@ void MainWindow::CalculateMass()
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
 
+        //qDebug()<<v.CalculateRoundRod(dim1, dim2);
+
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
         ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
@@ -769,6 +770,8 @@ void MainWindow::CalculateMass()
         materialSurfaceArea = sa.CalculateHexagonalRod(dim1,dim2);
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
+
+        qDebug()<<v.CalculateHexagonalRod(dim1, dim2);
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));

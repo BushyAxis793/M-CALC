@@ -15,8 +15,11 @@ float Surface_Area::CalculateRoundRod(float &diameterOut,float &length)
     sideSurface = 2*M_PI*r*l;
     
     finalSurfaceArea = 2*circleSurfaceArea + sideSurface;
-  
-    return finalSurfaceArea/10000;///Tutaj skonczy³em
+
+//    std::cout<<finalSurfaceArea<<std::endl;
+
+    return finalSurfaceArea/10000;
+
 }
 
 //rura okr¹g³a

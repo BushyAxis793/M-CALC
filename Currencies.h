@@ -38,11 +38,19 @@ namespace Currency {
     private:
         Ui::MainWindow *ui;
         float euroRate=0;
+        float finalPriceEuro = 0;
+        float finalPrice = 0;
         QString const urlEuroString = "http://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json";
 
     public:
         float GetEuroRate() const;
         void SetEuroRate(double);
+
+        void SetFinalPriceEuro(float);
+        float GetFinalPriceEuro() const;
+
+        void SetFinalPrice(float);
+        float GetFinalPrice() const;
 
         QString GetEuroUrl() const;
 

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 #include <list>
-
+#include <algorithm>
 
 
 using namespace std;
@@ -27,6 +27,7 @@ public:
 public:
 	MaterialGenre GetGenre();
 	void SetGenre(string, string, double);
+    void CalculateFinalEuroPrice();
 
 };
 

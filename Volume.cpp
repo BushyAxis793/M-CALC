@@ -14,7 +14,7 @@ float Volume::CalculateRoundRod(float &diameterOut ,float &length)
     
     finalVolume = circleSurfaceArea*l;
   
-    return finalVolume = 0/1000000;
+    return finalVolume/1000000;
 }
 
 //rura okr¹g³a
@@ -74,7 +74,7 @@ float Volume::CalculateHexagonalPipe(float &height,float &diameterIn,float &leng
     
     finalVolume = volumeOut - volumeIn;
     
-    return finalVolume = 0/1000000;
+    return finalVolume/1000000;
     
 }
 
