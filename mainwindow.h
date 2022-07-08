@@ -65,7 +65,7 @@ private:
     void CalculateMass();
     void SetMaterialDensity();
     void SwitchMaterialType();
-    void CalculateFinalEuroPrice();
+    void SetFinalEuroPrice();
     void CalculateFinalPrice();
     void SwitchCoatType();
     void PreloadSummary();

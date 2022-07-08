@@ -187,11 +187,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::CalculateFinalEuroPrice()
+void MainWindow::SetFinalEuroPrice()
 {
-    //Nie działa poprawić
-    unique_ptr<Calculations> calc (new(Calculations));
-    calc->CalculateFinalEuroPrice();
+    Calculations calc;
+    calc.CalculateFinalEuroPrice(currencyRate);
+
     ui->finalPriceEuroTextBox->setText(QString::number(currencyRate.GetFinalPriceEuro(),'f',4));
 }
 
@@ -238,7 +238,7 @@ float MainWindow::ReplaceComma(QString tempString)
 void MainWindow::on_coatCheckBox_stateChanged()
 {
     CalculateFinalPrice();
-    CalculateFinalEuroPrice();
+    SetFinalEuroPrice();
 }
 
 void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
@@ -477,7 +477,7 @@ void MainWindow::SwitchMaterialType()
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 1://Stal
@@ -488,7 +488,7 @@ void MainWindow::SwitchMaterialType()
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 2://Stal nierdzewna
@@ -499,7 +499,7 @@ void MainWindow::SwitchMaterialType()
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 3://Plastik
@@ -510,7 +510,7 @@ void MainWindow::SwitchMaterialType()
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 4://Żeliwo
@@ -521,7 +521,7 @@ void MainWindow::SwitchMaterialType()
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
 
@@ -533,7 +533,7 @@ void MainWindow::SwitchMaterialType()
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
         break;
 
     case 6: //Miedź
@@ -544,7 +544,7 @@ void MainWindow::SwitchMaterialType()
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
         break;
 
     case 7: //Mosiądz
@@ -555,7 +555,7 @@ void MainWindow::SwitchMaterialType()
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
         break;
 
     case 8: //Ołów
@@ -566,7 +566,7 @@ void MainWindow::SwitchMaterialType()
         CalculateMass();
         numberOfZeroGenre=2;
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
         break;
 
     }
@@ -635,7 +635,7 @@ void MainWindow::on_dimension1TextBox_textEdited(const QString &arg1)
     CalculateMass();
     SwitchCoatType();
     CalculateFinalPrice();
-    CalculateFinalEuroPrice();
+    SetFinalEuroPrice();
 
 }
 
@@ -648,7 +648,7 @@ void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
     CalculateMass();
     SwitchCoatType();
     CalculateFinalPrice();
-    CalculateFinalEuroPrice();
+    SetFinalEuroPrice();
     CalculateMaterialNeeded();
     if(ui->quantityMaterialTextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
 
@@ -663,7 +663,7 @@ void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
     CalculateMass();
     SwitchCoatType();
     CalculateFinalPrice();
-    CalculateFinalEuroPrice();
+    SetFinalEuroPrice();
     CalculateMaterialNeeded();
     if(ui->quantityMaterialTextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
 
@@ -678,7 +678,7 @@ void MainWindow::on_dimension4TextBox_textEdited(const QString &arg1)
     CalculateMass();
     SwitchCoatType();
     CalculateFinalPrice();
-    CalculateFinalEuroPrice();
+    SetFinalEuroPrice();
     CalculateMaterialNeeded();
     if(ui->quantityMaterialTextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
 
@@ -692,7 +692,7 @@ void MainWindow::on_materialPriceTextBox_textEdited(const QString &arg1)
     CalculateMass();
     SwitchCoatType();
     CalculateFinalPrice();
-    CalculateFinalEuroPrice();
+    SetFinalEuroPrice();
 
     if(tempString!="")
     {
@@ -716,7 +716,7 @@ void MainWindow::on_materialPriceEuroTextBox_textEdited(const QString &arg1)
     CalculateMass();
     SwitchCoatType();
     CalculateFinalPrice();
-    CalculateFinalEuroPrice();
+    SetFinalEuroPrice();
 
     if(tempString!="")
     {
@@ -748,7 +748,7 @@ void MainWindow::CalculateMass()
         ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 1://Rura okragla
@@ -762,7 +762,7 @@ void MainWindow::CalculateMass()
         ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 2:// Pret szesciokatny
@@ -778,7 +778,7 @@ void MainWindow::CalculateMass()
         ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 3://Rura szesciokatna
@@ -792,7 +792,7 @@ void MainWindow::CalculateMass()
         ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 4://Pret kwadratory
@@ -806,7 +806,7 @@ void MainWindow::CalculateMass()
         ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 5://Blacha/Plaskownik
@@ -820,7 +820,7 @@ void MainWindow::CalculateMass()
         ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 6://Profil zamkniety
@@ -834,7 +834,7 @@ void MainWindow::CalculateMass()
         ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 7://Katownik
@@ -848,7 +848,7 @@ void MainWindow::CalculateMass()
         ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     case 8://Ceownik
@@ -862,7 +862,7 @@ void MainWindow::CalculateMass()
         ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
 
         break;
     }
@@ -875,25 +875,25 @@ void MainWindow::SwitchCoatType()
     case 0:
         coatingCost = ca.CalculateAnodizingCost(materialSurfaceArea,coatingPrice);
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
         ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
         break;
     case 1:
         coatingCost = ca.CalculateGalvanizingCost(materialMass,coatingPrice);
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
         ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
         break;
     case 2:
         coatingCost = ca.CalculateHardeningCost(materialMass,coatingPrice);
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
         ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
         break;
     case 3:
         coatingCost = ca.CalculateBlackeningCost(materialMass,coatingPrice);
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
         ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
         break;
     }
@@ -901,7 +901,7 @@ void MainWindow::SwitchCoatType()
 
 void MainWindow::on_coatTypeComboBox_currentIndexChanged(int index)
 {
-    CalculateFinalEuroPrice();
+    SetFinalEuroPrice();
 
     SwitchCoatType();
 }
@@ -920,7 +920,7 @@ void MainWindow::on_euroRateTextBox_textEdited(const QString &arg1)
     tempString = ui->euroRateTextBox->text();
     currencyRate.SetEuroRate(ReplaceComma(tempString));
 
-    CalculateFinalEuroPrice();
+    SetFinalEuroPrice();
 }
 
 void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
@@ -935,7 +935,7 @@ void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
             SetMaterialDensity();
             SwitchCoatType();
             CalculateFinalPrice();
-            CalculateFinalEuroPrice();
+            SetFinalEuroPrice();
         }
     }
     else
@@ -943,7 +943,7 @@ void MainWindow::on_chooseMaterialGenreComboBox_currentIndexChanged(int index)
         SetMaterialDensity();
         SwitchCoatType();
         CalculateFinalPrice();
-        CalculateFinalEuroPrice();
+        SetFinalEuroPrice();
     }
 
 }

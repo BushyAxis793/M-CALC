@@ -7,6 +7,8 @@
 #include <list>
 #include <algorithm>
 
+#include "Currencies.h"
+
 
 using namespace std;
 
@@ -27,7 +29,7 @@ public:
 public:
 	MaterialGenre GetGenre();
 	void SetGenre(string, string, double);
-    void CalculateFinalEuroPrice();
+    void CalculateFinalEuroPrice(Currency::Euro&);
 
 };
 
