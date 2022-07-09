@@ -3,7 +3,7 @@
 //Obliczanie pola powierchni materia³u  - definicje
 
 //prêt okr¹g³y
-float Surface_Area::CalculateRoundRod(float &diameterOut,float &length)
+float Surface_Area::CalculateRoundRod(float diameterOut,float length)
 {
 
     float r = diameterOut/2;
@@ -23,7 +23,7 @@ float Surface_Area::CalculateRoundRod(float &diameterOut,float &length)
 }
 
 //rura okr¹g³a
-float Surface_Area::CalculateRoundPipe(float &diameterOut,float &Wallthickness,float &length)
+float Surface_Area::CalculateRoundPipe(float diameterOut,float Wallthickness,float length)
 {
     float r_out = diameterOut/2;
     float b = Wallthickness;
@@ -54,7 +54,7 @@ float Surface_Area::CalculateRoundPipe(float &diameterOut,float &Wallthickness,f
 }
 
 //prêt szeœciok¹tny
-float Surface_Area::CalculateHexagonalRod(float &height, float &length)
+float Surface_Area::CalculateHexagonalRod(float height, float length)
 {
     float h = height;
     //float l = length;
@@ -69,7 +69,7 @@ float Surface_Area::CalculateHexagonalRod(float &height, float &length)
 }
 
 //rura szeœciok¹tna
-float Surface_Area::CalculateHexagonalPipe(float &height,float &diameterIn,float &length)
+float Surface_Area::CalculateHexagonalPipe(float height,float diameterIn,float length)
 {
     float h = height;
     float r_in = diameterIn/2;
@@ -92,7 +92,7 @@ float Surface_Area::CalculateHexagonalPipe(float &height,float &diameterIn,float
 }
 
 //prêt kwadratowy
-float Surface_Area::CalculateSquareRod(float &side,float &length)
+float Surface_Area::CalculateSquareRod(float side,float length)
 {
     float a = side;
     float l = length;
@@ -108,7 +108,7 @@ float Surface_Area::CalculateSquareRod(float &side,float &length)
 }
 
 //blacha/plaskownik
-float Surface_Area::CalculatePlate(float &thickness,float &width,float &length)
+float Surface_Area::CalculatePlate(float thickness,float width,float length)
 {
     float a = width;
     float b = thickness;
@@ -121,7 +121,7 @@ float Surface_Area::CalculatePlate(float &thickness,float &width,float &length)
 }
 
 //profil kwadratowy
-float Surface_Area::CalculateSquareProfile(float &height,float &width,float &wallThickness,float &length)
+float Surface_Area::CalculateSquareProfile(float height,float width,float wallThickness,float length)
 {
     float a = height;
     float b = width;
@@ -141,7 +141,7 @@ float Surface_Area::CalculateSquareProfile(float &height,float &width,float &wal
 }
 
 //k¹townik
-float Surface_Area::CalculateAngleProfile(float &height,float &width,float &wallThickness,float &length)
+float Surface_Area::CalculateAngleProfile(float height,float width,float wallThickness,float length)
 {
 	float a = height;
     float b = width;
@@ -160,7 +160,7 @@ float Surface_Area::CalculateAngleProfile(float &height,float &width,float &wall
 }
 
 //ceownik
-float Surface_Area::CalculateCProfile(float &height,float &width,float &wallThickness,float &length)
+float Surface_Area::CalculateCProfile(float height,float width,float wallThickness,float length)
 {
     float a = height;
     float b = width;
@@ -178,7 +178,7 @@ float Surface_Area::CalculateCProfile(float &height,float &width,float &wallThic
 }
 
 //teownik
-float Surface_Area::CalculateTProfile(float &height,float &width,float &wallThickness,float &length)
+float Surface_Area::CalculateTProfile(float height,float width,float wallThickness,float length)
 {
 	float a = height;
     float b = width;
@@ -196,7 +196,7 @@ float Surface_Area::CalculateTProfile(float &height,float &width,float &wallThic
 }
 
 //dwuteownik
-float Surface_Area::Calculate2TProfile(float &height,float &width,float &wallThickness,float &length)
+float Surface_Area::Calculate2TProfile(float height,float width,float wallThickness,float length)
 {
     float a = height;
     float b = width;

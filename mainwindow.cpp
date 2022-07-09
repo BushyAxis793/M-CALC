@@ -62,6 +62,7 @@ int numberOfZeroGenre=0;
 
 Currency::Euro currencyRate;
 Connection::Status connectStatus;
+Calculations calculations;
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -69,6 +70,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+
 
     //connect(currencyRate,SIGNAL(LoadEuroRate()),ui->euroRateTextBox,SLOT(setText(QString)));
 
@@ -164,8 +167,6 @@ manager->get(QNetworkRequest(QUrl(currencyRate.GetEuroUrl())));
 
 void MainWindow::LoadEuroRate(){
 
-    qDebug()<<connectStatus.GetConnectionStatus();
-
     if(connectStatus.GetConnectionStatus())
     {
         ui->euroRateTextBox->setText(QString::number(currencyRate.GetEuroRate(),'f',2));
@@ -191,13 +192,11 @@ void MainWindow::SetFinalEuroPrice()
 {
     Calculations calc;
     calc.CalculateFinalEuroPrice(currencyRate);
-
     ui->finalPriceEuroTextBox->setText(QString::number(currencyRate.GetFinalPriceEuro(),'f',4));
 }
 
 void MainWindow::PreloadSummary()
 {
-
     ui->euroRateTextBox->setText(QString::number(currencyRate.GetEuroRate(),'f',2));
     ui->finalPriceEuroTextBox->setText(QString::number(0,'f',4));
     ui->materialMassTextBox->setText(QString::number(0,'f',4));
@@ -212,7 +211,6 @@ void MainWindow::CalculateFinalPrice()
         ui->coatTypeComboBox->setEnabled(true);
         ui->coatPriceTextBox->setEnabled(true);
         currencyRate.SetFinalPrice(materialCost + coatingCost);
-        //finalPrice = materialCost + coatingCost;
         ui->finalPriceTextBox->setText(QString::number(currencyRate.GetFinalPrice(),'f',4));
         ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
 
@@ -222,7 +220,6 @@ void MainWindow::CalculateFinalPrice()
         ui->coatTypeComboBox->setEnabled(false);
         ui->coatPriceTextBox->setEnabled(false);
         currencyRate.SetFinalPrice(materialCost);
-        //finalPrice = materialCost;
         ui->finalPriceTextBox->setText(QString::number(currencyRate.GetFinalPrice(),'f',4));
         ui->coatCostTextBox->setText(QString::number(0,'f',4));
 
@@ -257,8 +254,8 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
 
-        dim1=0;
-        dim2=0;
+        calculations.SetDimension1(0);
+        calculations.SetDimension2(0);
 
 
         break;
@@ -276,9 +273,9 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4TextBox->setVisible(false);
 
 
-        dim1=0;
-        dim2=0;
-        dim3=0;
+        calculations.SetDimension1(0);
+        calculations.SetDimension2(0);
+        calculations.SetDimension3(0);
 
 
         break;
@@ -293,8 +290,8 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
 
-        dim1=0;
-        dim2=0;
+        calculations.SetDimension1(0);
+        calculations.SetDimension2(0);
 
 
         break;
@@ -311,9 +308,9 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
 
-        dim1=0;
-        dim2=0;
-        dim3=0;
+        calculations.SetDimension1(0);
+        calculations.SetDimension2(0);
+        calculations.SetDimension3(0);
 
 
         break;
@@ -328,8 +325,8 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
 
-        dim1=0;
-        dim2=0;
+        calculations.SetDimension1(0);
+        calculations.SetDimension2(0);
 
         break;
     case 5://Blacha/Płaskownik
@@ -345,9 +342,9 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(false);
         ui->dimension4TextBox->setVisible(false);
 
-        dim1=0;
-        dim2=0;
-        dim3=0;
+        calculations.SetDimension1(0);
+        calculations.SetDimension2(0);
+        calculations.SetDimension3(0);
 
 
         break;
@@ -366,10 +363,10 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(true);
         ui->dimension4TextBox->setVisible(true);
 
-        dim1=0;
-        dim2=0;
-        dim3=0;
-        dim4=0;
+        calculations.SetDimension1(0);
+        calculations.SetDimension2(0);
+        calculations.SetDimension3(0);
+        calculations.SetDimension4(0);
 
 
         break;
@@ -388,10 +385,10 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(true);
         ui->dimension4TextBox->setVisible(true);
 
-        dim1=0;
-        dim2=0;
-        dim3=0;
-        dim4=0;
+        calculations.SetDimension1(0);
+        calculations.SetDimension2(0);
+        calculations.SetDimension3(0);
+        calculations.SetDimension4(0);
 
         break;
     case 8://Ceownik/Dwuteownik
@@ -409,10 +406,10 @@ void MainWindow::on_chooseMaterialShapeComboBox_currentIndexChanged(int index)
         ui->dimension4Label->setVisible(true);
         ui->dimension4TextBox->setVisible(true);
 
-        dim1=0;
-        dim2=0;
-        dim3=0;
-        dim4=0;
+        calculations.SetDimension1(0);
+        calculations.SetDimension2(0);
+        calculations.SetDimension3(0);
+        calculations.SetDimension4(0);
 
 
         break;
@@ -630,7 +627,7 @@ void MainWindow::SetMaterialDensity()
 void MainWindow::on_dimension1TextBox_textEdited(const QString &arg1)
 {
     tempString = ui->dimension1TextBox->text();
-    dim1 = ReplaceComma(tempString);
+    calculations.SetDimension1(ReplaceComma(tempString));
 
     CalculateMass();
     SwitchCoatType();
@@ -642,7 +639,7 @@ void MainWindow::on_dimension1TextBox_textEdited(const QString &arg1)
 void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
 {
     tempString = ui->dimension2TextBox->text();
-    dim2 = ReplaceComma(tempString);
+    calculations.SetDimension2(ReplaceComma(tempString));
 
 
     CalculateMass();
@@ -658,7 +655,7 @@ void MainWindow::on_dimension2TextBox_textEdited(const QString &arg1)
 void MainWindow::on_dimension3TextBox_textEdited(const QString &arg1)
 {
     tempString = ui->dimension3TextBox->text();
-    dim3 = ReplaceComma(tempString);
+    calculations.SetDimension3(ReplaceComma(tempString));
 
     CalculateMass();
     SwitchCoatType();
@@ -673,7 +670,7 @@ void MainWindow::on_dimension4TextBox_textEdited(const QString &arg1)
 {
 
     tempString = ui->dimension4TextBox->text();
-    dim4 = ReplaceComma(tempString);
+    calculations.SetDimension4(ReplaceComma(tempString));
 
     CalculateMass();
     SwitchCoatType();
@@ -736,8 +733,8 @@ void MainWindow::CalculateMass()
     {
     case 0://Pret
 
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(dim1,dim2));
-        materialSurfaceArea = sa.CalculateRoundRod(dim1,dim2);
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(calculations.GetDimension1(),calculations.GetDimension2()));
+        materialSurfaceArea = sa.CalculateRoundRod(calculations.GetDimension1(),calculations.GetDimension2());
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
 
@@ -752,8 +749,8 @@ void MainWindow::CalculateMass()
 
         break;
     case 1://Rura okragla
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateRoundPipe(dim1,dim2,dim3));
-        materialSurfaceArea = sa.CalculateRoundPipe(dim1,dim2,dim3);
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateRoundPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3()));
+        materialSurfaceArea = sa.CalculateRoundPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3());
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
 
@@ -766,12 +763,12 @@ void MainWindow::CalculateMass()
 
         break;
     case 2:// Pret szesciokatny
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalRod(dim1,dim2));
-        materialSurfaceArea = sa.CalculateHexagonalRod(dim1,dim2);
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalRod(calculations.GetDimension1(),calculations.GetDimension2()));
+        materialSurfaceArea = sa.CalculateHexagonalRod(calculations.GetDimension1(),calculations.GetDimension2());
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
 
-        qDebug()<<v.CalculateHexagonalRod(dim1, dim2);
+        //qDebug()<<v.CalculateHexagonalRod(dim1, dim2);
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
@@ -782,8 +779,8 @@ void MainWindow::CalculateMass()
 
         break;
     case 3://Rura szesciokatna
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalPipe(dim1,dim2,dim3));
-        materialSurfaceArea = sa.CalculateHexagonalPipe(dim1,dim2,dim3);
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3()));
+        materialSurfaceArea = sa.CalculateHexagonalPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3());
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
 
@@ -796,8 +793,8 @@ void MainWindow::CalculateMass()
 
         break;
     case 4://Pret kwadratory
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateSquareRod(dim1,dim2));
-        materialSurfaceArea = sa.CalculateSquareRod(dim1,dim2);
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateSquareRod(calculations.GetDimension1(),calculations.GetDimension2()));
+        materialSurfaceArea = sa.CalculateSquareRod(calculations.GetDimension1(),calculations.GetDimension2());
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
 
@@ -810,8 +807,8 @@ void MainWindow::CalculateMass()
 
         break;
     case 5://Blacha/Plaskownik
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculatePlate(dim1,dim2,dim3));
-        materialSurfaceArea = sa.CalculatePlate(dim1,dim2,dim3);
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculatePlate(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3()));
+        materialSurfaceArea = sa.CalculatePlate(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3());
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
 
@@ -824,8 +821,8 @@ void MainWindow::CalculateMass()
 
         break;
     case 6://Profil zamkniety
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateSquareProfile(dim1,dim2,dim3,dim4));
-        materialSurfaceArea = sa.CalculateSquareProfile(dim1,dim2,dim3,dim4);
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateSquareProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4()));
+        materialSurfaceArea = sa.CalculateSquareProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4());
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
 
@@ -838,8 +835,8 @@ void MainWindow::CalculateMass()
 
         break;
     case 7://Katownik
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateAngleProfile(dim1,dim2,dim3,dim4));
-        materialSurfaceArea = sa.CalculateAngleProfile(dim1,dim2,dim3,dim4);
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateAngleProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4()));
+        materialSurfaceArea = sa.CalculateAngleProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4());
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
 
@@ -852,8 +849,8 @@ void MainWindow::CalculateMass()
 
         break;
     case 8://Ceownik
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateCProfile(dim1,dim2,dim3,dim4));
-        materialSurfaceArea = sa.CalculateCProfile(dim1,dim2,dim3,dim4);
+        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateCProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4()));
+        materialSurfaceArea = sa.CalculateCProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4());
         materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
         finalPrice = materialCost;
 
@@ -954,10 +951,6 @@ void MainWindow::on_chooseMaterialTypeComboBox_currentIndexChanged(int index)
     SwitchCoatType();
 
 }
-
-
-
-
 
 void MainWindow::on_quantityMaterialTextBox_textEdited(const QString &arg1)
 {

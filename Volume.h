@@ -15,37 +15,37 @@ public:
 //Obliczanie objêtoœci materia³u - deklaracje
 
 //Prêt okr¹g³y
-float CalculateRoundRod(float&,float&);
+float CalculateRoundRod(float,float);
 
 //rura okr¹g³a
-float CalculateRoundPipe(float&,float&,float&);
+float CalculateRoundPipe(float,float,float);
 
 //prêt szeœciok¹tny
-float CalculateHexagonalRod(float&, float&);
+float CalculateHexagonalRod(float, float);
 
 //rura szeœciok¹tna
-float CalculateHexagonalPipe(float&,float&,float&);
+float CalculateHexagonalPipe(float,float,float);
 
 //prêt kwadratowy
-float CalculateSquareRod(float&,float&);
+float CalculateSquareRod(float,float);
 
 //blacha/plaskowniki
-float CalculatePlate(float&,float&,float&);
+float CalculatePlate(float,float,float);
 
 //profil kwadratowy
-float CalculateSquareProfile(float&,float&,float&,float&);
+float CalculateSquareProfile(float,float,float,float);
 
 //k¹townik
-float CalculateAngleProfile(float&,float&,float&,float&);
+float CalculateAngleProfile(float,float,float,float);
 
 //ceownik
-float CalculateCProfile(float&,float&,float&,float&);
+float CalculateCProfile(float,float,float,float);
 
 //teownik
-float CalculateTProfile(float&,float&,float&,float&);
+float CalculateTProfile(float,float,float,float);
 
 //dwuteownik
-float Calculate2TProfile(float&,float&,float&,float&);
+float Calculate2TProfile(float,float,float,float);
 	
 };
 

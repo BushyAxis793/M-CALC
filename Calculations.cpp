@@ -28,3 +28,46 @@ void Calculations::CalculateFinalEuroPrice(Currency::Euro &currency)
         currency.SetFinalPriceEuro(0);
     }
 }
+
+void Calculations::SetDimension1(float dimension)
+{
+    dimension1 = dimension;
+}
+
+float Calculations::GetDimension1() const
+{
+    return dimension1;
+}
+
+
+void Calculations::SetDimension2(float dimension)
+{
+    dimension2 = dimension;
+}
+
+float Calculations::GetDimension2() const
+{
+    return dimension2;
+}
+
+
+void Calculations::SetDimension3(float dimension)
+{
+    dimension3 = dimension;
+}
+
+float Calculations::GetDimension3() const
+{
+    return dimension3;
+}
+
+
+void Calculations::SetDimension4(float dimension)
+{
+    dimension4 = dimension;
+}
+
+float Calculations::GetDimension4() const
+{
+    return dimension4;
+}

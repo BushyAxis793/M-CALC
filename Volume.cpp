@@ -4,7 +4,7 @@
 //Obliczanie objêtoœci materia³u - definicje
 
 //Prêt okr¹g³y
-float Volume::CalculateRoundRod(float &diameterOut ,float &length)
+float Volume::CalculateRoundRod(float diameterOut ,float length)
 {
     float r = diameterOut/2;
     float l = length;
@@ -18,7 +18,7 @@ float Volume::CalculateRoundRod(float &diameterOut ,float &length)
 }
 
 //rura okr¹g³a
-float Volume::CalculateRoundPipe(float &diametrOut,float &wallThickness,float &length)
+float Volume::CalculateRoundPipe(float diametrOut,float wallThickness,float length)
 {
     float r_out = diametrOut/2;
     float b = wallThickness;
@@ -42,7 +42,7 @@ float Volume::CalculateRoundPipe(float &diametrOut,float &wallThickness,float &l
 }
 
 //prêt szeœciok¹tny
-float Volume::CalculateHexagonalRod(float &height, float &length)
+float Volume::CalculateHexagonalRod(float height, float length)
 {
     float h = height;
     float l = length;
@@ -57,7 +57,7 @@ float Volume::CalculateHexagonalRod(float &height, float &length)
 }
 
 //rura szeœciok¹tna
-float Volume::CalculateHexagonalPipe(float &height,float &diameterIn,float &length)
+float Volume::CalculateHexagonalPipe(float height,float diameterIn,float length)
 {
     float h = height;
     float r_in = diameterIn/2;
@@ -79,7 +79,7 @@ float Volume::CalculateHexagonalPipe(float &height,float &diameterIn,float &leng
 }
 
 //prêt kwadratowy
-float Volume::CalculateSquareRod(float &side,float &length)
+float Volume::CalculateSquareRod(float side,float length)
 {
     float a = side;
     float l = length;
@@ -91,7 +91,7 @@ float Volume::CalculateSquareRod(float &side,float &length)
 }
 
 //blacha/plaskownik
-float Volume::CalculatePlate(float &thickness,float &width,float &length)
+float Volume::CalculatePlate(float thickness,float width,float length)
 {
     float a = width;
     float b = thickness;
@@ -104,7 +104,7 @@ float Volume::CalculatePlate(float &thickness,float &width,float &length)
 }
 
 //profil kwadratowy
-float Volume::CalculateSquareProfile(float &height,float &width,float &wallThickness,float &length)
+float Volume::CalculateSquareProfile(float height,float width,float wallThickness,float length)
 {
     float a = height;
     float b = width;
@@ -124,7 +124,7 @@ float Volume::CalculateSquareProfile(float &height,float &width,float &wallThick
 }
 
 //k¹townik
-float Volume::CalculateAngleProfile(float &height,float &width,float &wallThickness,float &length)
+float Volume::CalculateAngleProfile(float height,float width,float wallThickness,float length)
 {
 	float a = height;
     float b = width;
@@ -143,7 +143,7 @@ float Volume::CalculateAngleProfile(float &height,float &width,float &wallThickn
 }
 
 //ceownik
-float Volume::CalculateCProfile(float &height,float &width,float &wallThickness,float &length)
+float Volume::CalculateCProfile(float height,float width,float wallThickness,float length)
 {
     float a = height;
     float b = width;
@@ -161,7 +161,7 @@ float Volume::CalculateCProfile(float &height,float &width,float &wallThickness,
 }
 
 //teownik
-float Volume::CalculateTProfile(float &height,float &width,float &wallThickness,float &length)
+float Volume::CalculateTProfile(float height,float width,float wallThickness,float length)
 {
 	float a = height;
     float b = width;
@@ -179,7 +179,7 @@ float Volume::CalculateTProfile(float &height,float &width,float &wallThickness,
 }
 
 //dwuteownik
-float Volume::Calculate2TProfile(float &height,float &width,float &wallThickness,float &length)
+float Volume::Calculate2TProfile(float height,float width,float wallThickness,float length)
 {
 	float a = height;
     float b = width;
