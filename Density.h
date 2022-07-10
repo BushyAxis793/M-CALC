@@ -68,10 +68,20 @@ double lead_density[1] =
 	
 };
 
-public:
-float CalculateMaterialMass(float& ,float);
+private:
+    float materialDensity = 0;
+    float materialMass = 0;
 
-float CalculateMaterialPrice(float&,float&);
+public:
+float CalculateMaterialMass(float ,float);
+
+float CalculateMaterialPrice(float,float);
+
+void SetMaterialDensity(float);
+float GetMaterialDensity() const;
+
+void SetMaterialMass(float);
+float GetMaterialMass() const;
 	
 };
 

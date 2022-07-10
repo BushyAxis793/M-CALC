@@ -37,24 +37,20 @@
 
 
 QList<MaterialsGenre::Genre> genreStructList;
-Volume v;
-Density d;
-Surface_Area sa;
-Coating_Area ca;
+Volume volume;
+Density density;
+Surface_Area surfaceArea;
+Coating_Area coatingArea;
 QSettings settings("P.W.U.H. METPOL","M-CALC");
 QString tempString;
-float materialDensity=0;
-float materialSurfaceArea=0;
-float materialVolume=0;
-float materialCoatingArea=0;
-float materialMass=0;
+
 float materialCost=0;
 float materialPrice=0;
 float coatingCost=0;
 float coatingPrice=0;
 float finalPrice=0;
 float finalPriceEuro=0;
-float dim1=0,dim2=0,dim3=0,dim4=0,price=0;
+float price=0;
 
 
 int numberOfZeroGenre=0;
@@ -617,7 +613,7 @@ void MainWindow::SetMaterialDensity()
 {
     for (int i=0;i<=ui->chooseMaterialGenreComboBox->currentIndex() ;i++ ) {
 
-        materialDensity = genreStructList[i].materialDensity;
+        density.SetMaterialDensity(genreStructList[i].materialDensity);
         CalculateMass();
     }
 }
@@ -733,130 +729,130 @@ void MainWindow::CalculateMass()
     {
     case 0://Pret
 
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateRoundRod(calculations.GetDimension1(),calculations.GetDimension2()));
-        materialSurfaceArea = sa.CalculateRoundRod(calculations.GetDimension1(),calculations.GetDimension2());
-        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        density.SetMaterialMass(density.CalculateMaterialMass(density.GetMaterialDensity(),volume.CalculateRoundRod(calculations.GetDimension1(),calculations.GetDimension2())));
+        surfaceArea.SetMaterialSurfaceArea(surfaceArea.CalculateRoundRod(calculations.GetDimension1(),calculations.GetDimension2()));
+        materialCost = density.CalculateMaterialPrice(density.GetMaterialMass(),materialPrice);
         finalPrice = materialCost;
 
         //qDebug()<<v.CalculateRoundRod(dim1, dim2);
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
-        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialMassTextBox->setText(QString::number(density.GetMaterialMass(),'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
         SetFinalEuroPrice();
 
         break;
     case 1://Rura okragla
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateRoundPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3()));
-        materialSurfaceArea = sa.CalculateRoundPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3());
-        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        density.SetMaterialMass(density.CalculateMaterialMass(density.GetMaterialDensity(),volume.CalculateRoundPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3())));
+        surfaceArea.SetMaterialSurfaceArea(surfaceArea.CalculateRoundPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3()));
+        materialCost = density.CalculateMaterialPrice(density.GetMaterialMass(),materialPrice);
         finalPrice = materialCost;
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
-        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialMassTextBox->setText(QString::number(density.GetMaterialMass(),'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
         SetFinalEuroPrice();
 
         break;
     case 2:// Pret szesciokatny
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalRod(calculations.GetDimension1(),calculations.GetDimension2()));
-        materialSurfaceArea = sa.CalculateHexagonalRod(calculations.GetDimension1(),calculations.GetDimension2());
-        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        density.SetMaterialMass(density.CalculateMaterialMass(density.GetMaterialDensity(),volume.CalculateHexagonalRod(calculations.GetDimension1(),calculations.GetDimension2())));
+        surfaceArea.SetMaterialSurfaceArea(surfaceArea.CalculateHexagonalRod(calculations.GetDimension1(),calculations.GetDimension2()));
+        materialCost = density.CalculateMaterialPrice(density.GetMaterialMass(),materialPrice);
         finalPrice = materialCost;
 
         //qDebug()<<v.CalculateHexagonalRod(dim1, dim2);
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
-        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialMassTextBox->setText(QString::number(density.GetMaterialMass(),'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
         SetFinalEuroPrice();
 
         break;
     case 3://Rura szesciokatna
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateHexagonalPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3()));
-        materialSurfaceArea = sa.CalculateHexagonalPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3());
-        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        density.SetMaterialMass(density.CalculateMaterialMass(density.GetMaterialDensity(),volume.CalculateHexagonalPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3())));
+        surfaceArea.SetMaterialSurfaceArea(surfaceArea.CalculateHexagonalPipe(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3()));
+        materialCost = density.CalculateMaterialPrice(density.GetMaterialMass(),materialPrice);
         finalPrice = materialCost;
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
-        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialMassTextBox->setText(QString::number(density.GetMaterialMass(),'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
         SetFinalEuroPrice();
 
         break;
     case 4://Pret kwadratory
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateSquareRod(calculations.GetDimension1(),calculations.GetDimension2()));
-        materialSurfaceArea = sa.CalculateSquareRod(calculations.GetDimension1(),calculations.GetDimension2());
-        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        density.SetMaterialMass(density.CalculateMaterialMass(density.GetMaterialDensity(),volume.CalculateSquareRod(calculations.GetDimension1(),calculations.GetDimension2())));
+        surfaceArea.SetMaterialSurfaceArea(surfaceArea.CalculateSquareRod(calculations.GetDimension1(),calculations.GetDimension2()));
+        materialCost = density.CalculateMaterialPrice(density.GetMaterialMass(),materialPrice);
         finalPrice = materialCost;
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
-        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialMassTextBox->setText(QString::number(density.GetMaterialMass(),'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
         SetFinalEuroPrice();
 
         break;
     case 5://Blacha/Plaskownik
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculatePlate(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3()));
-        materialSurfaceArea = sa.CalculatePlate(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3());
-        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        density.SetMaterialMass(density.CalculateMaterialMass(density.GetMaterialDensity(),volume.CalculatePlate(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3())));
+        surfaceArea.SetMaterialSurfaceArea(surfaceArea.CalculatePlate(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3()));
+        materialCost = density.CalculateMaterialPrice(density.GetMaterialMass(),materialPrice);
         finalPrice = materialCost;
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
-        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialMassTextBox->setText(QString::number(density.GetMaterialMass(),'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
         SetFinalEuroPrice();
 
         break;
     case 6://Profil zamkniety
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateSquareProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4()));
-        materialSurfaceArea = sa.CalculateSquareProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4());
-        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        density.SetMaterialMass(density.CalculateMaterialMass(density.GetMaterialDensity(),volume.CalculateSquareProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4())));
+        surfaceArea.SetMaterialSurfaceArea(surfaceArea.CalculateSquareProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4()));
+        materialCost = density.CalculateMaterialPrice(density.GetMaterialMass(),materialPrice);
         finalPrice = materialCost;
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
-        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialMassTextBox->setText(QString::number(density.GetMaterialMass(),'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
         SetFinalEuroPrice();
 
         break;
     case 7://Katownik
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateAngleProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4()));
-        materialSurfaceArea = sa.CalculateAngleProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4());
-        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        density.SetMaterialMass(density.CalculateMaterialMass(density.GetMaterialDensity(),volume.CalculateAngleProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4())));
+        surfaceArea.SetMaterialSurfaceArea(surfaceArea.CalculateAngleProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4()));
+        materialCost = density.CalculateMaterialPrice(density.GetMaterialMass(),materialPrice);
         finalPrice = materialCost;
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
-        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialMassTextBox->setText(QString::number(density.GetMaterialMass(),'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
         SetFinalEuroPrice();
 
         break;
     case 8://Ceownik
-        materialMass = d.CalculateMaterialMass(materialDensity,v.CalculateCProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4()));
-        materialSurfaceArea = sa.CalculateCProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4());
-        materialCost = d.CalculateMaterialPrice(materialMass,materialPrice);
+        density.SetMaterialMass(density.CalculateMaterialMass(density.GetMaterialDensity(),volume.CalculateCProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4())));
+        surfaceArea.SetMaterialSurfaceArea(surfaceArea.CalculateCProfile(calculations.GetDimension1(),calculations.GetDimension2(),calculations.GetDimension3(),calculations.GetDimension4()));
+        materialCost = density.CalculateMaterialPrice(density.GetMaterialMass(),materialPrice);
         finalPrice = materialCost;
 
 
         ui->finalPriceTextBox->setText(QString::number(finalPrice,'f',4));
-        ui->materialMassTextBox->setText(QString::number(materialMass,'f',4));
+        ui->materialMassTextBox->setText(QString::number(density.GetMaterialMass(),'f',4));
         ui->materialCostTextBox->setText(QString::number(materialCost,'f',4));
 
         SetFinalEuroPrice();
@@ -870,25 +866,25 @@ void MainWindow::SwitchCoatType()
     switch (ui->coatTypeComboBox->currentIndex())
     {
     case 0:
-        coatingCost = ca.CalculateAnodizingCost(materialSurfaceArea,coatingPrice);
+        coatingCost = coatingArea.CalculateAnodizingCost(surfaceArea.GetMaterialSurfaceArea(),coatingPrice);
         CalculateFinalPrice();
         SetFinalEuroPrice();
         ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
         break;
     case 1:
-        coatingCost = ca.CalculateGalvanizingCost(materialMass,coatingPrice);
+        coatingCost = coatingArea.CalculateGalvanizingCost(density.GetMaterialMass(),coatingPrice);
         CalculateFinalPrice();
         SetFinalEuroPrice();
         ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
         break;
     case 2:
-        coatingCost = ca.CalculateHardeningCost(materialMass,coatingPrice);
+        coatingCost = coatingArea.CalculateHardeningCost(density.GetMaterialMass(),coatingPrice);
         CalculateFinalPrice();
         SetFinalEuroPrice();
         ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
         break;
     case 3:
-        coatingCost = ca.CalculateBlackeningCost(materialMass,coatingPrice);
+        coatingCost = coatingArea.CalculateBlackeningCost(density.GetMaterialMass(),coatingPrice);
         CalculateFinalPrice();
         SetFinalEuroPrice();
         ui->coatCostTextBox->setText(QString::number(coatingCost,'f',4));
@@ -975,56 +971,56 @@ void MainWindow::CalculateMaterialNeeded()
 
     switch (ui->chooseMaterialShapeComboBox->currentIndex()) {
     case 0:
-        tempVal = quantity*dim2;
+        tempVal = quantity*calculations.GetDimension2();
         ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
         ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
         if(ui->dimension2TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
 
         break;
     case 1:
-        tempVal = quantity*dim3;
+        tempVal = quantity*calculations.GetDimension3();
         ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
         ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
         if(ui->dimension3TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
         break;
     case 2:
-        tempVal = quantity*dim2;
+        tempVal = quantity*calculations.GetDimension2();
         ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
         ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
         if(ui->dimension2TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
         break;
     case 3:
-        tempVal = quantity*dim3;
+        tempVal = quantity*calculations.GetDimension3();
         ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
         ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
         if(ui->dimension3TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
         break;
     case 4:
-        tempVal = quantity*dim2;
+        tempVal = quantity*calculations.GetDimension2();
         ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
         ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
         if(ui->dimension2TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
         break;
     case 5:
-        tempVal = quantity*dim3;
+        tempVal = quantity*calculations.GetDimension3();
         ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
         ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
         if(ui->dimension3TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
         break;
     case 6:
-        tempVal = quantity*dim4;
+        tempVal = quantity*calculations.GetDimension4();
         ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
         ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
         if(ui->dimension4TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
         break;
     case 7:
-        tempVal = quantity*dim4;
+        tempVal = quantity*calculations.GetDimension4();
         ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
         ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
         if(ui->dimension4TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));
         break;
     case 8:
-        tempVal = quantity*dim4;
+        tempVal = quantity*calculations.GetDimension4();
         ui->amountMaterialNeededTextBox->setText(std::to_string(tempVal).c_str());
         ui->amountMaterialNeededTextBox->setText(QString::number(tempVal,'f',0));
         if(ui->dimension4TextBox->text()=="") ui->amountMaterialNeededTextBox->setText(QString::number(0,'f',4));

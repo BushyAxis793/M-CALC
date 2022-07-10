@@ -213,4 +213,12 @@ float Surface_Area::Calculate2TProfile(float height,float width,float wallThickn
     return finalSurfaceArea/10000;
 }
 
+void Surface_Area::SetMaterialSurfaceArea(float surfaceArea)
+{
+    materialSurfaceArea = surfaceArea;
+}
 
+float Surface_Area::GetMaterialSurfaceArea() const
+{
+    return materialSurfaceArea;
+}

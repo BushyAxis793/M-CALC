@@ -10,7 +10,8 @@ using namespace std;
 
 class Surface_Area
 {
-
+private:
+    float materialSurfaceArea = 0;
 public:
 //Obliczanie pola powierchni materia³u  - deklaracje
 
@@ -47,7 +48,10 @@ float CalculateTProfile(float,float,float,float);
 //dwuteownik
 float Calculate2TProfile(float,float,float,float);
 
-	
+
+void SetMaterialSurfaceArea(float);
+float GetMaterialSurfaceArea()const;
+
 };
 
 #endif

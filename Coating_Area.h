@@ -12,19 +12,19 @@ public:
 //Obliczanie kosztu pow³oki - deklaracje
 
 //Anodowanie
-float CalculateAnodizingCost(float&,float&);
+float CalculateAnodizingCost(float,float);
 
 //Cynkowanie
-float CalculateGalvanizingCost(float&,float&);
+float CalculateGalvanizingCost(float,float);
 
 //Hartowanie
-float CalculateHardeningCost(float&,float&);
+float CalculateHardeningCost(float,float);
 
 //Czernienie
-float CalculateBlackeningCost(float&,float&);
+float CalculateBlackeningCost(float,float);
 
 //Nawêglanie
-float CalculateCarburizingCost(float&,float&);
+float CalculateCarburizingCost(float,float);
 	
 	
 };
