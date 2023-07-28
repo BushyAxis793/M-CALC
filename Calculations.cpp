@@ -1,7 +1,7 @@
 #include "Calculations.h"
 
 
-Calculations::MaterialGenre mg;
+
 
 Calculations::MaterialGenre Calculations::GetGenre()
 {

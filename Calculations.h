@@ -17,11 +17,10 @@ class Calculations
 public:
 	struct MaterialGenre
 	{
-
         string materialName;
         string materialGenreName;
         double materialDensity;
-	};
+    } mg;
     list<MaterialGenre> materialGenreList;
 private:
     float dimension1 = 0;
